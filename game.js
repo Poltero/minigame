@@ -11,3 +11,7 @@ var requestAnimFrame = (function(){
         };
 })();
 
+var canvas = document.getElementById('game');
+var ctx = canvas.getContext('2d');
+canvas.width = 700;
+canvas.height = 600;
