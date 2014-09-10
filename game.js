@@ -15,3 +15,17 @@ var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
 canvas.width = 700;
 canvas.height = 600;
+
+//The main game loop
+var lastTime;
+
+function main() {
+    var now = Date.now();
+    var dt = (now - lastTime) / 1000.0;
+
+    //update(dt);
+    //render();
+
+    lastTime = now;
+    requestAnimationFrame(main);
+}
