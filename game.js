@@ -24,8 +24,19 @@ function main() {
     var dt = (now - lastTime) / 1000.0;
 
     //update(dt);
-    //render();
+    render();
 
     lastTime = now;
     requestAnimationFrame(main);
 }
+
+var player = new Entity(0,0, null);
+
+function render() {
+    
+    player.renderRect(ctx);
+
+    console.log(lastTime);
+}
+
+//main();
