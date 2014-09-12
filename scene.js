@@ -21,7 +21,7 @@
 
             //Render player
             this.player.draw(ctx,this.viewport.offsetx, this.viewport.offsety);
-            console.log(this.player.entity.pos[0]);
+            //console.log(this.player.entity.pos[0]);
         },
 
         init: function() {
@@ -64,13 +64,45 @@
 
         update: function(dt, controls) {
             if(controls.left) {
-                this.viewport.offsetx += this.player.speed * dt;
+                if((this.player.entity.pos[0]-this.viewport.offsetx) <= this.player.entity.pos[0]) {
+                    this.player.entity.pos[0] -= this.player.speed * dt;
+                }
+                else {
+                    this.viewport.offsetx += this.player.speed * dt;
+                }
             }
             if(controls.right) {
-                this.viewport.offsetx -= this.player.speed * dt;
+                if(this.viewport.pixelActivate > this.player.entity.pos[0]) {
+                    this.player.entity.pos[0] += this.player.speed * dt;
+                }
+                else {
+                    this.viewport.offsetx -= this.player.speed * dt;
+                }
             }
         }
     };
 
     window.Scene = Scene;
 })();
+
+
+
+/*
+
+if(controls.left) {
+                if(this.viewport.offsetx <= this.player.entity.pos[0]) {
+                    this.player.entity.pos[0] -= this.player.speed * dt;
+                }
+                else {
+                    this.viewport.offsetx += this.player.speed * dt;
+                }
+            }
+            if(controls.right) {
+                if(this.viewport.pixelActivate > this.player.entity.pos[0]) {
+                    this.player.entity.pos[0] += this.player.speed * dt;
+                }
+                else {
+                    this.viewport.offsetx -= this.player.speed * dt;
+                }
+            }
+*/

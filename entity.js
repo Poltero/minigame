@@ -17,7 +17,7 @@
             //ctx.save();
 
             ctx.fillRect(this.pos[0]-offsetx,this.pos[1]-offsety,32,32);
-            ctx.fillText(this.pos[0], this.pos[0], this.pos[1])
+            //ctx.fillText(this.pos[0], this.pos[0], this.pos[1])
 
             //ctx.restore();
         }

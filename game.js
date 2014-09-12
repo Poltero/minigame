@@ -61,6 +61,7 @@ function render() {
 }
 
 function update(dt) {
+    handlerInput();
     currentLevel.update(dt, GameState.controls);
 }
 
@@ -73,7 +74,7 @@ function init() {
     main();
 }
 
-window.addEventListener("keydown", function(e){
+/*window.addEventListener("keydown", function(e){
     switch(e.keyCode)
     {
         case 37: // left arrow
@@ -110,18 +111,10 @@ window.addEventListener("keyup", function(e){
             //Game.togglePause();
             break;      
     }
-}, false);
+}, false);*/
 
-/*function handlerInput(dt) {
-    if(input.isDown('LEFT') || input.isDown('a')) {
-        //GameState.controls.left = input.isDown('LEFT');
-        //currentLevel.viewport.offsetx += playerSpeed * dt;
-    }
+function handlerInput() {
+    GameState.controls.left = input.isDown('LEFT');
 
-    if(input.isDown('RIGHT') || input.isDown('d')) {
-        //GameState.controls.right = input.isDown('RIGHT');
-        //currentLevel.viewport.offsetx -= playerSpeed * dt;
-    }
-
-    console.log("Left: " + input.isDown('LEFT'));
-}*/
+    GameState.controls.right = input.isDown('RIGHT');
+}
