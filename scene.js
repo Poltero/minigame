@@ -5,6 +5,7 @@
         this.plataforms = [];
         this.player = null;
         this.sizeTile = 32;
+        this.viewport = new Viewport(0,0);
     };
 
 
@@ -15,12 +16,12 @@
 
             //Render all plataforms
             for(i = 0; i < this.plataforms.length; i++) {
-                this.plataforms[i].renderRect(ctx);
+                this.plataforms[i].renderRect(ctx,0,0);
             }
 
             //Render player
-            ctx.fillStyle="#FF0000";
-            this.player.renderRect(ctx);
+            this.player.draw(ctx,this.viewport.offsetx, this.viewport.offsety);
+            console.log(this.player.entity.pos[0]);
         },
 
         init: function() {
@@ -42,7 +43,7 @@
                     }
                     else if(c == 'p') {
                         //console.log("LOAD player");
-                        this.player = new Entity(posx, posy,null);
+                        this.player = new Player(posx, posy,32,32,200);
                         //console.log(this.player);
                         posx = posx + this.sizeTile;
                     }
@@ -59,6 +60,15 @@
                 url: this.mapFile,
                 success: $.proxy(loadMap,this)
             });
+        },
+
+        update: function(dt, controls) {
+            if(controls.left) {
+                this.viewport.offsetx += this.player.speed * dt;
+            }
+            if(controls.right) {
+                this.viewport.offsetx -= this.player.speed * dt;
+            }
         }
     };
 
