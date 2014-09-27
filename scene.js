@@ -1,10 +1,11 @@
 (function(){
 
-    function Scene(mapFile) {
-        this.mapFile = mapFile;
-        this.plataforms = [];
-        this.player = null;
-        this.sizeTile = 32;
+    function Scene(mapFile, playerSize, tileSize) {
+        this._mapFile = mapFile;
+        this._plataforms = [];
+        this._player = null;
+        this._sizeTile = tileSize;
+        this._sizePlayer = playerSize;
         this.viewport = new Viewport(0,0);
     };
 
@@ -15,12 +16,12 @@
             ctx.fillStyle="#086A87";
 
             //Render all plataforms
-            for(i = 0; i < this.plataforms.length; i++) {
-                this.plataforms[i].renderRect(ctx,0,0);
+            for(i = 0; i < this._plataforms.length; i++) {
+                this._plataforms[i].renderRect(ctx,0,0);
             }
 
             //Render player
-            this.player.draw(ctx,this.viewport.offsetx, this.viewport.offsety);
+            this._player.draw(ctx,this.viewport.offsetx, this.viewport.offsety);
             //console.log(this.player.entity.pos[0]);
         },
 
@@ -35,21 +36,21 @@
                     var c = map.charAt(i);
                     
                     if(c == '-') {
-                        this.plataforms.push(new Entity(posx,posy,null));
-                        posx = posx + this.sizeTile;
+                        this._plataforms.push(new Entity(posx,posy,null));
+                        posx = posx + this._sizeTile;
                     }
                     else if(c == ' ') {
-                        posx = posx + this.sizeTile;
+                        posx = posx + this._sizeTile;
                     }
                     else if(c == 'p') {
                         //console.log("LOAD player");
-                        this.player = new Player(posx, posy,32,32,200);
+                        this._player = new Player(posx, posy,32,32,200);
                         //console.log(this.player);
-                        posx = posx + this.sizeTile;
+                        posx = posx + this._sizeTile;
                     }
                     else if(c == '\n') {
                         posx = 0;
-                        posy = posy + this.sizeTile;
+                        posy = posy + this._sizeTile;
                     }
                 }
             }
@@ -57,26 +58,26 @@
             $.ajax({
                 async: false,
                 type: 'GET',
-                url: this.mapFile,
+                url: this._mapFile,
                 success: $.proxy(loadMap,this)
             });
         },
 
         update: function(dt, controls) {
             if(controls.left) {
-                if((this.player.entity.pos[0]-this.viewport.offsetx) <= this.player.entity.pos[0]) {
-                    this.player.entity.pos[0] -= this.player.speed * dt;
+                if((this._player.entity.pos[0]-this.viewport.offsetx) <= this._player.entity.pos[0]) {
+                    this._player.entity.pos[0] -= this._player.speed * dt;
                 }
                 else {
-                    this.viewport.offsetx += this.player.speed * dt;
+                    this.viewport.offsetx += this._player.speed * dt;
                 }
             }
             if(controls.right) {
-                if(this.viewport.pixelActivate > this.player.entity.pos[0]) {
-                    this.player.entity.pos[0] += this.player.speed * dt;
+                if(this.viewport.pixelActivate > this._player.entity.pos[0]) {
+                    this._player.entity.pos[0] += this._player.speed * dt;
                 }
                 else {
-                    this.viewport.offsetx -= this.player.speed * dt;
+                    this.viewport.offsetx -= this._player.speed * dt;
                 }
             }
         }

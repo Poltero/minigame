@@ -67,7 +67,7 @@ function update(dt) {
 
 function init() {
 
-    currentLevel = new Scene("level1.txt");
+    currentLevel = new LevelNormal("level1.txt");
 
     currentLevel.init();
 
