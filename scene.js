@@ -17,7 +17,7 @@
 
             //Render all plataforms
             for(i = 0; i < this._plataforms.length; i++) {
-                this._plataforms[i].renderRect(ctx,0,0);
+                this._plataforms[i].render(ctx);
             }
 
             //Render player
@@ -36,7 +36,7 @@
                     var c = map.charAt(i);
                     
                     if(c == '-') {
-                        this._plataforms.push(new Entity(posx,posy,null));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == ' ') {
