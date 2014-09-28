@@ -7,6 +7,7 @@
         this._sizeTile = tileSize;
         this._sizePlayer = playerSize;
         this.viewport = new Viewport(0,0);
+        this.npcs = [];
     };
 
 
@@ -44,8 +45,12 @@
                     }
                     else if(c == 'p') {
                         //console.log("LOAD player");
-                        this._player = new Player(posx, posy,32,32,200,null);
+                        this._player = new Player(posx, posy,this._sizePlayer,this._sizePlayer,200,null);
                         //console.log(this.player);
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == 1 || c == 2) {
+                        this.npcs.push(new Player(posx, posy,this._sizePlayer,this._sizePlayer,200,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '\n') {

@@ -13,7 +13,7 @@ var requestAnimFrame = (function(){
 
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
-canvas.width = 700;
+canvas.width = 1024;
 canvas.height = 512;
 
 //Create an Viewport
@@ -26,7 +26,8 @@ var playerSpeed = 200;
 var GameState = {
     controls: {
         left: false,
-        right: false
+        right: false,
+        space: false
     }
 };
 
@@ -67,7 +68,9 @@ function update(dt) {
 
 function init() {
 
-    currentLevel = new LevelNormal("level1.txt");
+    //currentLevel = new LevelNormal("level1.txt");
+    currentLevel = new BonusOne("bonus1.txt");
+
 
     currentLevel.init();
 
@@ -117,4 +120,7 @@ function handlerInput() {
     GameState.controls.left = input.isDown('LEFT');
 
     GameState.controls.right = input.isDown('RIGHT');
+
+    if(!GameState.controls.space)
+        GameState.controls.space = input.isDown('SPACE');
 }

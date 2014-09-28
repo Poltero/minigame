@@ -27,7 +27,7 @@
             // draw a simple rectangle shape as our player model
             ctx.save();     
             ctx.fillStyle = "red";
-            console.log(this.x);
+            //console.log(this.x);
             ctx.fillRect(this.x-this.Viewx,this.y-this.Viewy,this.width,this.height);
             ctx.restore();
         }
