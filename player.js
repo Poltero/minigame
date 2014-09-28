@@ -1,12 +1,15 @@
 (function(){
 
-    function Player(x, y, width, height, speed) {
-        this.entity = new Entity(x,y,null);
+    function Player(x, y, width, height, speed, srpite) {
+        //this.entity = new Entity(x,y,null);
+        this._srpite = srpite;
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
         this.speed = speed;
-        this.x = 0;
-        this.y = 0;
+        this.Viewx = 0;
+        this.Viewy = 0;
     };
 
     Player.prototype = {
@@ -25,7 +28,7 @@
             ctx.save();     
             ctx.fillStyle = "red";
             console.log(this.x);
-            this.entity.renderRect(ctx, this.x, this.y);
+            ctx.fillRect(this.x-this.Viewx,this.y-this.Viewy,this.width,this.height);
             ctx.restore();
         }
     };

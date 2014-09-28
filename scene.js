@@ -21,7 +21,7 @@
             }
 
             //Render player
-            this._player.draw(ctx,this.viewport.offsetx, this.viewport.offsety);
+            this._player.draw(ctx);
             //console.log(this.player.entity.pos[0]);
         },
 
@@ -44,7 +44,7 @@
                     }
                     else if(c == 'p') {
                         //console.log("LOAD player");
-                        this._player = new Player(posx, posy,32,32,200);
+                        this._player = new Player(posx, posy,32,32,200,null);
                         //console.log(this.player);
                         posx = posx + this._sizeTile;
                     }
@@ -65,16 +65,16 @@
 
         update: function(dt, controls) {
             if(controls.left) {
-                if((this._player.entity.pos[0]-this.viewport.offsetx) <= this._player.entity.pos[0]) {
-                    this._player.entity.pos[0] -= this._player.speed * dt;
+                if((this._player.x-this.viewport.offsetx) <= this._player.x) {
+                    this._player.x -= this._player.speed * dt;
                 }
                 else {
                     this.viewport.offsetx += this._player.speed * dt;
                 }
             }
             if(controls.right) {
-                if(this.viewport.pixelActivate > this._player.entity.pos[0]) {
-                    this._player.entity.pos[0] += this._player.speed * dt;
+                if(this.viewport.pixelActivate > this._player.x) {
+                    this._player.x += this._player.speed * dt;
                 }
                 else {
                     this.viewport.offsetx -= this._player.speed * dt;
@@ -82,8 +82,8 @@
             }
 
             //update player position
-            this._player.x = this.viewport.offsetx;
-            this._player.y = this.viewport.offsety;
+            this._player.Viewx = this.viewport.offsetx;
+            this._player.Viewy = this.viewport.offsety;
         }
     };
 
