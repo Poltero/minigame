@@ -50,7 +50,7 @@
                         posx = posx + this._sizeTile;
                     }
                     else if(c == 1 || c == 2) {
-                        this.npcs.push(new Player(posx, posy,this._sizePlayer,this._sizePlayer,200,null));
+                        this.npcs.push(new Player(posx, posy,this._sizePlayer,this._sizePlayer,10,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '\n') {

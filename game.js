@@ -20,7 +20,7 @@ canvas.height = 512;
 //var viewport = new Viewport(0,0);
 
 //The main game loop
-var lastTime;
+var lastTime = 0;
 var playerSpeed = 200;
 
 var GameState = {
@@ -52,7 +52,7 @@ init();
 function render() {
     ctx.save();
     ctx.translate(currentLevel.viewport.offsetx, currentLevel.viewport.offsety);
-    ctx.clearRect(-currentLevel.viewport.offsetx, -currentLevel.viewport.offsety, 700,512);
+    ctx.clearRect(-currentLevel.viewport.offsetx, -currentLevel.viewport.offsety, 1024,512);
 
     currentLevel.render(ctx);
 
@@ -68,8 +68,8 @@ function update(dt) {
 
 function init() {
 
-    //currentLevel = new LevelNormal("level1.txt");
-    currentLevel = new BonusOne("bonus1.txt");
+    currentLevel = new LevelNormal("level1.txt");
+    //currentLevel = new BonusOne("bonus1.txt");
 
 
     currentLevel.init();
@@ -116,11 +116,23 @@ window.addEventListener("keyup", function(e){
     }
 }, false);*/
 
+var block_key = false;
+
 function handlerInput() {
     GameState.controls.left = input.isDown('LEFT');
 
     GameState.controls.right = input.isDown('RIGHT');
 
-    if(!GameState.controls.space)
-        GameState.controls.space = input.isDown('SPACE');
+    GameState.controls.space = input.isDown('SPACE');
+
+    if(GameState.controls.space) {
+
+        if(block_key) {
+            GameState.controls.space = false;
+        }
+
+        block_key = true;
+    } else {
+        block_key = false;
+    }
 }
