@@ -80,6 +80,10 @@
                     this.viewport.offsetx -= this._player.speed * dt;
                 }
             }
+
+            //update player position
+            this._player.x = this.viewport.offsetx;
+            this._player.y = this.viewport.offsety;
         }
     };
 

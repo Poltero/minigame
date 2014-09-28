@@ -5,6 +5,8 @@
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.x = 0;
+        this.y = 0;
     };
 
     Player.prototype = {
@@ -18,11 +20,12 @@
             }*/
         },
 
-        draw: function(ctx, xView, yView){        
+        draw: function(ctx){        
             // draw a simple rectangle shape as our player model
             ctx.save();     
             ctx.fillStyle = "red";
-            this.entity.renderRect(ctx, xView, yView);
+            console.log(this.x);
+            this.entity.renderRect(ctx, this.x, this.y);
             ctx.restore();
         }
     };
