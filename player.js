@@ -2,7 +2,7 @@
 
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
-        this._srpite = srpite;
+        this._sprite = new Sprite('img/test.png', [x,y], [32,32], 0, [0,0]);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -21,15 +21,20 @@
             if(state.controls.left) {
                 this.x -= this.speed * dt;
             }*/
+
+            this._sprite.pos[0] = this.x;
+            this._sprite.pos[1] = this.y;
         },
 
         draw: function(ctx){        
             // draw a simple rectangle shape as our player model
-            ctx.save();     
-            ctx.fillStyle = "red";
-            //console.log(this.x);
-            ctx.fillRect(this.x-this.Viewx,this.y-this.Viewy,this.width,this.height);
-            ctx.restore();
+            //ctx.save();     
+            //ctx.fillStyle = "red";
+            //ctx.fillRect(this.x-this.Viewx,this.y-this.Viewy,this.width,this.height);
+
+            //ctx.translate(this.Viewx, this.Viewy);
+            this._sprite.render(ctx, this.Viewx, this.Viewy);
+            //ctx.restore();
         }
     };
 

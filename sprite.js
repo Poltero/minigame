@@ -15,7 +15,7 @@
             this._index += this.speed*dt;
         },
 
-        render: function(ctx) {
+        render: function(ctx, vx, vy) {
             var frame;
 
             if(this.speed > 0) {
@@ -43,11 +43,16 @@
                 x += frame * this.size[0];
             }
 
+            //Debug options
+            //console.log("x: " + x + " | y: " + y);
+            //ctx.fillText(x+":"+y+" ("+this.size[1]+")", x-vx, y-vy);
+
             ctx.drawImage(resources.get(this.url),
-                          x, y,
-                          this.size[0], this.size[1],
-                          0, 0,
-                          this.size[0], this.size[1]);
+                          x-vx, y-vy
+                          //this.size[0], this.size[1],
+                          //0, 0,
+                          //this.size[0], this.size[1]
+                          );
         }
     };
 

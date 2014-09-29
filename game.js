@@ -45,7 +45,15 @@ function main() {
 
 var currentLevel;
 
-init();
+resources.load([
+    'img/test.png',
+    'img/test2.png'
+]);
+
+resources.onReady(init);
+
+
+//init();
 
 
 
@@ -75,6 +83,7 @@ function init() {
     currentLevel.init();
 
     main();
+
 }
 
 /*window.addEventListener("keydown", function(e){

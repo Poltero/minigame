@@ -89,6 +89,7 @@
             //update player position
             this._player.Viewx = this.viewport.offsetx;
             this._player.Viewy = this.viewport.offsety;
+            this._player.update(dt);
         }
     };
 
