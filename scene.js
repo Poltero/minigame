@@ -14,7 +14,9 @@
     Scene.prototype = {
 
         render: function(ctx) {
-            ctx.fillStyle="#086A87";
+            //ctx.fillStyle="#086A87";
+            //Render Background
+            ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety);
 
             //Render all plataforms
             for(i = 0; i < this._plataforms.length; i++) {

@@ -47,7 +47,8 @@ var currentLevel;
 
 resources.load([
     'img/test.png',
-    'img/test2.png'
+    'img/test2.png',
+    'img/bg.png'
 ]);
 
 resources.onReady(init);
@@ -76,7 +77,7 @@ function update(dt) {
 
 function init() {
 
-    currentLevel = new LevelNormal("level1.txt");
+    currentLevel = new LevelNormal('level1.txt', 'img/bg.png');
     //currentLevel = new BonusOne("bonus1.txt");
 
 
