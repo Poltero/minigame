@@ -75,7 +75,7 @@
         update: function(dt, controls) {
             if(controls.left) {
                 if((this._player.x-this.viewport.offsetx) <= this._player.x) {
-                    this._player.x -= this._player.speed * dt;
+                    this._player.x -= this._player.speed * dt;;
                 }
                 else {
                     this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
