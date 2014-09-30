@@ -17,10 +17,12 @@
             //ctx.fillStyle="#086A87";
             //Render Background
             ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety);
+            //console.log(this.viewport.offsetx);
 
             //Render all plataforms
             for(i = 0; i < this._plataforms.length; i++) {
-                this._plataforms[i].render(ctx);
+                if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + 1024))
+                    this._plataforms[i].render(ctx);
             }
 
             //Render player

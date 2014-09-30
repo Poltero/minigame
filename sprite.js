@@ -45,7 +45,7 @@
 
             //Debug options
             //console.log("x: " + x + " | y: " + y);
-            //ctx.fillText(x+":"+y+" ("+this.size[1]+")", x-vx, y-vy);
+            //ctx.fillText(x, x-vx, y-vy);
 
             ctx.drawImage(resources.get(this.url),
                           x-vx, y-vy

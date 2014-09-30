@@ -13,7 +13,7 @@ var requestAnimFrame = (function(){
 
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
-canvas.width = 1024;
+canvas.width = 1500;
 canvas.height = 512;
 
 //Create an Viewport
