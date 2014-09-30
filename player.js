@@ -22,6 +22,8 @@
                 this.x -= this.speed * dt;
             }*/
 
+            //this._sprite.pos[0] = (0.5 + this.x) << 0;
+            //this._sprite.pos[1] = (0.5 + this.y) << 0;
             this._sprite.pos[0] = this.x;
             this._sprite.pos[1] = this.y;
         },

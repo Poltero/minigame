@@ -17,11 +17,11 @@
             //ctx.fillStyle="#086A87";
             //Render Background
             ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety);
-            //console.log(this.viewport.offsetx);
+            //console.log(canvas.width);
 
             //Render all plataforms
             for(i = 0; i < this._plataforms.length; i++) {
-                if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + 1024))
+                if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + canvas.width))
                     this._plataforms[i].render(ctx);
             }
 
@@ -78,7 +78,7 @@
                     this._player.x -= this._player.speed * dt;
                 }
                 else {
-                    this.viewport.offsetx += this._player.speed * dt;
+                    this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
                 }
             }
             if(controls.right) {
@@ -86,7 +86,7 @@
                     this._player.x += this._player.speed * dt;
                 }
                 else {
-                    this.viewport.offsetx -= this._player.speed * dt;
+                    this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0 ;
                 }
             }
 

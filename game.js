@@ -13,7 +13,7 @@ var requestAnimFrame = (function(){
 
 var canvas = document.getElementById('game');
 var ctx = canvas.getContext('2d');
-canvas.width = 1500;
+canvas.width = 1024;
 canvas.height = 512;
 
 //Create an Viewport
@@ -61,7 +61,7 @@ resources.onReady(init);
 function render() {
     ctx.save();
     ctx.translate(currentLevel.viewport.offsetx, currentLevel.viewport.offsety);
-    ctx.clearRect(-currentLevel.viewport.offsetx, -currentLevel.viewport.offsety, 1024,512);
+    ctx.clearRect(-currentLevel.viewport.offsetx, -currentLevel.viewport.offsety, canvas.width,canvas.height);
 
     currentLevel.render(ctx);
 
