@@ -46,8 +46,8 @@ function main() {
 var currentLevel;
 
 resources.load([
-    'img/test.png',
-    'img/test2.png',
+    'img/player.png',
+    'img/tile.png',
     'img/bg.png'
 ]);
 

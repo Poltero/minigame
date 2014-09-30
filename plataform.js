@@ -5,7 +5,7 @@
         this.y = y;
         this.width = width;
         this.height = height;
-        this._sprite = new Sprite('img/test2.png', [x,y], [32,32], 0, [0,0]);
+        this._sprite = new Sprite('img/tile.png', [x,y], [32,32], 0, [0,0]);
     };
 
     Plataform.prototype = {

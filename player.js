@@ -2,7 +2,7 @@
 
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
-        this._sprite = new Sprite('img/test.png', [x,y], [32,32], 0, [0,0]);
+        this._sprite = new Sprite('img/player.png', [x,y], [32,32], 0, [0,0]);
         this.x = x;
         this.y = y;
         this.width = width;
