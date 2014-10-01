@@ -10,6 +10,22 @@
         this.speed = speed;
         this.Viewx = 0;
         this.Viewy = 0;
+
+        //Functions
+        this.checkcollision = function(plataform, viewport) {
+            var realX = this.x + -(viewport.offsetx);
+
+            if( (realX + this.width) > plataform.x &&
+                realX <= plataform.x &&
+                (this.y + this.height) > plataform.y
+                && this.y <= plataform.y ) {
+
+                return 'right';
+            }
+            else {
+                return 'none';
+            }
+        };
     };
 
     Player.prototype = {
