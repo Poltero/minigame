@@ -87,45 +87,6 @@ function init() {
 
 }
 
-/*window.addEventListener("keydown", function(e){
-    switch(e.keyCode)
-    {
-        case 37: // left arrow
-            GameState.controls.left = true;
-            break;
-        case 38: // up arrow
-            //Game.controls.up = true;
-            break;
-        case 39: // right arrow
-            GameState.controls.right = true;
-            break;
-        case 40: // down arrow
-            //Game.controls.down = true;
-            break;
-    }
-}, false);
-
-window.addEventListener("keyup", function(e){
-    switch(e.keyCode)
-    {
-        case 37: // left arrow
-            GameState.controls.left = false;
-            break;
-        case 38: // up arrow
-            //Game.controls.up = false;
-            break;
-        case 39: // right arrow
-            GameState.controls.right = false;
-            break;
-        case 40: // down arrow
-            //Game.controls.down = false;
-            break;
-        case 80: // key P pauses the game
-            //Game.togglePause();
-            break;      
-    }
-}, false);*/
-
 var block_key = false;
 
 function handlerInput() {

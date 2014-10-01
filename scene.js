@@ -88,7 +88,7 @@
                 }
                 else {
                     this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
-                    console.log("increment: " + ((0.5 +(this._player.speed * dt)) << 0));
+                    //console.log("increment: " + ((0.5 +(this._player.speed * dt)) << 0));
                 }
             }
 
@@ -104,9 +104,14 @@
             if(isCollision == 'right') {
                 if(this.viewport.isChange()) {
                     this.viewport.offsetx += (0.5 +(this._player.speed * dt)) << 0;
-                    //console.log("decrement: " + ((0.5 +(this._player.speed * dt)) << 0));
                 } else {
                     this._player.x -= this._player.speed * dt;
+                }
+            }else if(isCollision == 'left') {
+                if(this.viewport.isChange()) {
+                    this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
+                } else {
+                    this._player.x += this._player.speed * dt;
                 }
             }
 

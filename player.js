@@ -21,6 +21,12 @@
                 && this.y <= plataform.y ) {
 
                 return 'right';
+            } else if( realX <= (plataform.x + plataform.width) &&
+                ((realX + this.width) >= (plataform.x + plataform.width)) &&
+                (this.y + this.height) > plataform.y
+                && this.y <= plataform.y ) {
+
+                return 'left';
             }
             else {
                 return 'none';
