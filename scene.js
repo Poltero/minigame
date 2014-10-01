@@ -73,42 +73,43 @@
         },
 
         update: function(dt, controls) {
-            //collisions
-            var isCollision = false, index = 0;
+
+            if(controls.left) {
+                if((this._player.x-this.viewport.offsetx) <= this._player.x) {
+                    this._player.x -= this._player.speed * dt;;
+                }
+                else {
+                    this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
+                }
+            }
+            if(controls.right) {
+                if(this.viewport.pixelActivate > this._player.x) {
+                    this._player.x += this._player.speed * dt;
+                }
+                else {
+                    this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
+                    console.log("increment: " + ((0.5 +(this._player.speed * dt)) << 0));
+                }
+            }
+
+            //Detect Collisions
+            var isCollision = false;
             for(i = 0; i < this._plataforms.length; i++) {
                 isCollision = this._player.checkcollision(this._plataforms[i], this.viewport);
                 if(isCollision != 'none') {
-                    index = i;
                     break;
                 }
             }
 
-            if(isCollision != 'left') {
-                if(controls.left) {
-                    if((this._player.x-this.viewport.offsetx) <= this._player.x) {
-                        this._player.x -= this._player.speed * dt;;
-                    }
-                    else {
-                        this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
-                    }
+            if(isCollision == 'right') {
+                if(this.viewport.isChange()) {
+                    this.viewport.offsetx += (0.5 +(this._player.speed * dt)) << 0;
+                    //console.log("decrement: " + ((0.5 +(this._player.speed * dt)) << 0));
+                } else {
+                    this._player.x -= this._player.speed * dt;
                 }
-            }
-            if(isCollision != 'right') {
-                if(controls.right) {
-                    if(this.viewport.pixelActivate > this._player.x) {
-                        this._player.x += this._player.speed * dt;
-                    }
-                    else {
-                        this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0 ;
-                    }
-                }
-            } else {
-                //console.log('collision!');
-                //Volvemos atras
-                //this.viewport.back((0.5 +(this._player.speed * dt)) << 0);
             }
 
-            //Save state viewport
 
             //update player position
             this._player.Viewx = this.viewport.offsetx;

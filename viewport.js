@@ -5,8 +5,8 @@
         this.offsety = offsety;
         this.pixelActivate = 300;
 
-        this.back = function(x) {
-            this.offsetx += x;
+        this.isChange = function() {
+            return this.offsetx != 0;
         };
     }
 
