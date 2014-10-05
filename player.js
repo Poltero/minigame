@@ -2,7 +2,7 @@
 
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
-        this._sprite = new Sprite('img/player.png', [x,y], [32,32], 0, [0,0]);
+        this._sprite = new Sprite('img/player.png', [x,y], [width,height], 0, [0,0]);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -10,28 +10,26 @@
         this.speed = speed;
         this.Viewx = 0;
         this.Viewy = 0;
+        this.speedJump = 300;
 
-        //Functions
-        this.checkcollision = function(plataform, viewport) {
+        this.checkCollision = function(p, viewport) {
             var realX = this.x + -(viewport.offsetx);
 
-            if( (realX + this.width) > plataform.x &&
-                realX <= plataform.x &&
-                (this.y + this.height) > plataform.y
-                && this.y <= plataform.y ) {
+            var lP = realX;
+            var rP = realX + this.width;
+            var bP = this.y + this.height;
+            var lT = p.x;
+            var rT = p.x + p.width;
+            var tT = p.y;
+            var bT = p.y + p.height;
 
-                return 'right';
-            } else if( realX <= (plataform.x + plataform.width) &&
-                ((realX + this.width) >= (plataform.x + plataform.width)) &&
-                (this.y + this.height) > plataform.y
-                && this.y <= plataform.y ) {
-
-                return 'left';
-            }
-            else {
-                return 'none';
-            }
+            return ( bP >= tT &&
+                    bP < bT &&
+                    rP >= lT &&
+                    lP <= rT );
         };
+
+        
     };
 
     Player.prototype = {

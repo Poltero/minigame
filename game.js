@@ -20,7 +20,7 @@ canvas.height = 512;
 //var viewport = new Viewport(0,0);
 
 //The main game loop
-var lastTime = 0;
+var lastTime;
 var playerSpeed = 200;
 
 var GameState = {
@@ -82,6 +82,8 @@ function init() {
 
 
     currentLevel.init();
+
+    lastTime = Date.now();
 
     main();
 

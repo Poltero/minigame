@@ -73,6 +73,7 @@
         },
 
         update: function(dt, controls) {
+            //console.log(this._player.y);
 
             if(controls.left) {
                 if((this._player.x-this.viewport.offsetx) <= this._player.x) {
@@ -93,27 +94,70 @@
             }
 
             //Detect Collisions
-            var isCollision = false;
+            var collision = false, plataform = null;
+            var vectorResult = false;
             for(i = 0; i < this._plataforms.length; i++) {
-                isCollision = this._player.checkcollision(this._plataforms[i], this.viewport);
-                if(isCollision != 'none') {
+                if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
+                    collision = true;
                     break;
                 }
             }
 
-            if(isCollision == 'right') {
-                if(this.viewport.isChange()) {
-                    this.viewport.offsetx += (0.5 +(this._player.speed * dt)) << 0;
-                } else {
-                    this._player.x -= this._player.speed * dt;
-                }
-            }else if(isCollision == 'left') {
-                if(this.viewport.isChange()) {
-                    this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
-                } else {
-                    this._player.x += this._player.speed * dt;
-                }
+            if(!collision) {
+                this._player.y += this._player.speedJump * dt;
             }
+
+            /*if(collision) {
+                var absx = Math.abs(vectorResult.x);
+                var absy = Math.abs(vectorResult.y); console.log("s");
+
+                if(absx > absy) {
+                    console.log("down");
+                    //axis Y
+                    if(vectorResult.y < 0) {
+                        //top of tile
+                        console.log("here");
+                    } else {
+                        this._player.y += this._player.speedJump * dt;
+                    }
+                }
+
+
+                /*if(this._player.isCollisionRight(plataform, this.viewport)) {
+                    if(this.viewport.isChange()) {
+                        this.viewport.offsetx += (0.5 +(this._player.speed * dt)) << 0;
+                    } else {
+                        this._player.x -= this._player.speed * dt;
+                    }
+                }
+                if(this._player.isCollisionLeft(plataform, this.viewport)) {
+                    if(this.viewport.isChange()) {
+                        this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
+                    } else {
+                        this._player.x += this._player.speed * dt;
+                    }
+                }
+                
+                if(!this._player.isCollisionDown(plataform, this.viewport)) {
+                    //console.log(this._player.y + " vy: " + this._player.speedJump * dt + " DT: " + dt);
+                    console.log(this._player.y + " | " + plataform.y);
+                    this._player.y += this._player.speedJump * dt;
+                } else {
+                    //console.log(collision.vertical);
+                }*/
+            //}
+            
+
+            
+
+            //Control collision vertical
+            /*if(!this._player.isCollisionDown(this._plataforms[i], this.viewport)) {
+                //console.log(this._player.y + " vy: " + this._player.speedJump * dt + " DT: " + dt);
+                console.log(this._player.y + " | " + this._plataforms[i].y);
+                this._player.y += this._player.speedJump * dt;
+            } else {
+                //console.log(collision.vertical);
+            }*/
 
 
             //update player position
