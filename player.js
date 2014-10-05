@@ -10,7 +10,11 @@
         this.speed = speed;
         this.Viewx = 0;
         this.Viewy = 0;
+        this.speedDown = 350;
         this.speedJump = 300;
+        this.jumped = false;
+        this.finalY = 0;
+        this.pixelJump = 85;
 
         this.checkCollision = function(p, viewport) {
             var realX = this.x + -(viewport.offsetx);
@@ -27,6 +31,26 @@
                     bP < bT &&
                     rP >= lT &&
                     lP <= rT );
+        };
+
+        this.jump = function(dt) {
+            if(!this.jumped) {
+                this.finalY = Math.abs(this.y - this.pixelJump);
+                this.jumped = true;
+                this._sprite = new Sprite('img/jump.png', [this.x,this.y], [this.width,this.height], 0, [0,0]);
+            }
+            if(this.jumped) {
+                //console.log(this.y + " | " + this.finalY);
+                if(this.y >= this.finalY) {
+                    this.y -= this.speedJump * dt;
+                    //console.log("Current: " + this.y);
+                } else {
+                    this.jumped = false;
+                    this._sprite = new Sprite('img/player.png', [x,y], [width,height], 0, [0,0]);
+                }
+            }
+            
+            
         };
 
         

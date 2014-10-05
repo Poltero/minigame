@@ -93,6 +93,10 @@
                 }
             }
 
+            if(controls.up || this._player.jumped) {
+                this._player.jump(dt);
+            }
+
             //Detect Collisions
             var collision = false, plataform = null;
             var vectorResult = false;
@@ -103,8 +107,8 @@
                 }
             }
 
-            if(!collision) {
-                this._player.y += this._player.speedJump * dt;
+            if(!collision && !this._player.jumped) {
+                this._player.y += this._player.speedDown * dt;
             }
 
             /*if(collision) {

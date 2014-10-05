@@ -27,7 +27,8 @@ var GameState = {
     controls: {
         left: false,
         right: false,
-        space: false
+        space: false,
+        up: false
     }
 };
 
@@ -48,7 +49,8 @@ var currentLevel;
 resources.load([
     'img/player.png',
     'img/tile.png',
-    'img/bg.png'
+    'img/bg.png',
+    'img/jump.png'
 ]);
 
 resources.onReady(init);
@@ -97,6 +99,8 @@ function handlerInput() {
     GameState.controls.right = input.isDown('RIGHT');
 
     GameState.controls.space = input.isDown('SPACE');
+
+    GameState.controls.up = input.isDown('UP');
 
     if(GameState.controls.space) {
 
