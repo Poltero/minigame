@@ -21,8 +21,8 @@
         this.checkCollision = function(p, viewport) {
             var realX = this.x + -(viewport.offsetx);
 
-            var lP = realX;
-            var rP = realX + this.width;
+            var lP = realX /* Ajuste */+ 18;
+            var rP = realX + this.width /* Ajuste */- 18;
             var bP = this.y + this.height;
             var lT = p.x;
             var rT = p.x + p.width;
