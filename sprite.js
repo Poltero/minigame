@@ -8,17 +8,19 @@
         this.url = url;
         this.dir = dir || 'horizontal';
         this.once = once;
+        this.active = false;
     };
 
     Sprite.prototype = {
         update: function(dt) {
-            this._index += this.speed*dt;
+            if(this.active)
+                this._index += this.speed*dt;
         },
 
         render: function(ctx, vx, vy) {
             var frame;
 
-            if(this.speed > 0) {
+            if(this.speed > 0 && this.active) {
                 var max = this.frames.length;
                 var idx = Math.floor(this._index);
                 frame = this.frames[idx % max];
@@ -35,12 +37,14 @@
 
             var x = this.pos[0];
             var y = this.pos[1];
+            var xp = 0;
+            var yp = 0;
 
             if(this.dir == 'vertical') {
-                y += frame * this.size[1];
+                yp += frame * this.size[1];
             }
             else {
-                x += frame * this.size[0];
+                xp += frame * this.size[0];
             }
 
             //Debug options
@@ -48,11 +52,22 @@
             //ctx.fillText(x, x-vx, y-vy);
 
             ctx.drawImage(resources.get(this.url),
-                          x-vx, y-vy
-                          //this.size[0], this.size[1],
-                          //0, 0,
-                          //this.size[0], this.size[1]
+                          xp,yp,
+                          this.size[0], this.size[1],
+                          x-vx, y-vy,
+                          this.size[0], this.size[1]
                           );
+        },
+
+        activate: function() {
+            this.active = true;
+        },
+
+        deactivate: function() {
+            if(this.active) {
+                this.active = false;
+                this._index = 0;
+            }
         }
     };
 

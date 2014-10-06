@@ -2,7 +2,9 @@
 
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
-        this._sprite = new Sprite('img/player.png', [x,y], [width,height], 0, [0,0]);
+        this._spriteRight = new Sprite('img/player.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal');
+        this._spriteJump = new Sprite('img/jump.png', [x,y], [width,height], 0, [0,0]);
+        this._sprite = this._spriteRight;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -37,7 +39,7 @@
             if(!this.jumped && collision) {
                 this.finalY = Math.abs(this.y - this.pixelJump);
                 this.jumped = true;
-                this._sprite = new Sprite('img/jump.png', [this.x,this.y], [this.width,this.height], 0, [0,0]);
+                this._sprite = this._spriteJump;
             }
             if(this.jumped) {
                 //console.log(this.y + " | " + this.finalY);
@@ -46,11 +48,9 @@
                     //console.log("Current: " + this.y);
                 } else {
                     this.jumped = false;
-                    this._sprite = new Sprite('img/player.png', [x,y], [width,height], 0, [0,0]);
+                    this._sprite = this._spriteRight;
                 }
-            }
-            
-            
+            }   
         };
 
         
@@ -70,6 +70,8 @@
             //this._sprite.pos[1] = (0.5 + this.y) << 0;
             this._sprite.pos[0] = this.x;
             this._sprite.pos[1] = this.y;
+
+            this._sprite.update(dt);
         },
 
         draw: function(ctx){        
@@ -81,6 +83,14 @@
             //ctx.translate(this.Viewx, this.Viewy);
             this._sprite.render(ctx, this.Viewx, this.Viewy);
             //ctx.restore();
+        },
+
+        runAnimations: function() {
+            this._sprite.activate();
+        },
+
+        stopAnimations: function() {
+            this._sprite.deactivate();
         }
     };
 

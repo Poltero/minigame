@@ -89,8 +89,11 @@
                 }
                 else {
                     this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
-                    //console.log("increment: " + ((0.5 +(this._player.speed * dt)) << 0));
                 }
+
+                this._player.runAnimations();
+            } else {
+                this._player.stopAnimations();
             }
 
 
