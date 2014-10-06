@@ -50,7 +50,8 @@ resources.load([
     'img/player.png',
     'img/tile.png',
     'img/bg.png',
-    'img/jump.png'
+    'img/jump.png',
+    'img/enemy.png'
 ]);
 
 resources.onReady(init);

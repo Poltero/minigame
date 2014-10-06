@@ -4,10 +4,12 @@
         this._mapFile = mapFile;
         this._plataforms = [];
         this._player = null;
+        this._enemies = [];
         this._sizeTile = tileSize;
         this._sizePlayer = playerSize;
         this.viewport = new Viewport(0,0);
         this.npcs = [];
+        //this.vision = 128;
     };
 
 
@@ -24,6 +26,12 @@
                 if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + canvas.width))
                     this._plataforms[i].render(ctx);
             }
+
+            //Render all Enemies
+            for(i = 0; i < this._enemies.length; i++) {
+                if(this._enemies[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._enemies[i].x <= (-(this.viewport.offsetx) + canvas.width))
+                    this._enemies[i].render(ctx);
+            }       
 
             //Render player
             this._player.draw(ctx);
@@ -42,6 +50,10 @@
                     
                     if(c == '-') {
                         this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null));
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == '+') {
+                        this._enemies.push(new Enemy(posx,posy,this._sizeTile,this._sizeTile,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == ' ') {
@@ -98,7 +110,7 @@
 
 
             //Detect Collisions
-            var collision = false, plataform = null;
+            var collision = false, count = 0;
             var vectorResult = false;
             for(i = 0; i < this._plataforms.length; i++) {
                 if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
