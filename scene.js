@@ -93,9 +93,6 @@
                 }
             }
 
-            if(controls.up || this._player.jumped) {
-                this._player.jump(dt);
-            }
 
             //Detect Collisions
             var collision = false, plataform = null;
@@ -105,6 +102,10 @@
                     collision = true;
                     break;
                 }
+            }
+
+            if(controls.up || this._player.jumped) {
+                this._player.jump(dt, collision);
             }
 
             if(!collision && !this._player.jumped) {

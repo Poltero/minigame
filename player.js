@@ -33,8 +33,8 @@
                     lP <= rT );
         };
 
-        this.jump = function(dt) {
-            if(!this.jumped) {
+        this.jump = function(dt, collision) {
+            if(!this.jumped && collision) {
                 this.finalY = Math.abs(this.y - this.pixelJump);
                 this.jumped = true;
                 this._sprite = new Sprite('img/jump.png', [this.x,this.y], [this.width,this.height], 0, [0,0]);
