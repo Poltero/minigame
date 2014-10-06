@@ -29,7 +29,7 @@
 
             //Render all Enemies
             for(i = 0; i < this._enemies.length; i++) {
-                if(this._enemies[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._enemies[i].x <= (-(this.viewport.offsetx) + canvas.width))
+                if(this._enemies[i].rendering)
                     this._enemies[i].render(ctx);
             }       
 
@@ -53,7 +53,7 @@
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '+') {
-                        this._enemies.push(new Enemy(posx,posy,this._sizeTile,this._sizeTile,null));
+                        this._enemies.push(new Enemy(posx,posy,this._sizeTile,this._sizeTile,100,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == ' ') {
@@ -110,7 +110,7 @@
 
 
             //Detect Collisions
-            var collision = false, count = 0;
+            var collision = false, count = 0, collisionEnemy;
             var vectorResult = false;
             for(i = 0; i < this._plataforms.length; i++) {
                 if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
@@ -119,6 +119,7 @@
                 }
             }
 
+            //Player
             if(controls.up || this._player.jumped) {
                 this._player.jump(dt, collision);
             }
@@ -127,63 +128,40 @@
                 this._player.y += this._player.speedDown * dt;
             }
 
-            /*if(collision) {
-                var absx = Math.abs(vectorResult.x);
-                var absy = Math.abs(vectorResult.y); console.log("s");
-
-                if(absx > absy) {
-                    console.log("down");
-                    //axis Y
-                    if(vectorResult.y < 0) {
-                        //top of tile
-                        console.log("here");
-                    } else {
-                        this._player.y += this._player.speedJump * dt;
+            //Enemies
+            for(i = 0; i < this._enemies.length; i++) {
+                collisionEnemy = false;
+                for(j = 0; j < this._plataforms.length; j++) {
+                    if(this._enemies[i].checkCollision(this._plataforms[j])) {
+                        collisionEnemy = true;
+                        break;
                     }
                 }
-
-
-                /*if(this._player.isCollisionRight(plataform, this.viewport)) {
-                    if(this.viewport.isChange()) {
-                        this.viewport.offsetx += (0.5 +(this._player.speed * dt)) << 0;
-                    } else {
-                        this._player.x -= this._player.speed * dt;
-                    }
-                }
-                if(this._player.isCollisionLeft(plataform, this.viewport)) {
-                    if(this.viewport.isChange()) {
-                        this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
-                    } else {
-                        this._player.x += this._player.speed * dt;
-                    }
-                }
-                
-                if(!this._player.isCollisionDown(plataform, this.viewport)) {
-                    //console.log(this._player.y + " vy: " + this._player.speedJump * dt + " DT: " + dt);
-                    console.log(this._player.y + " | " + plataform.y);
-                    this._player.y += this._player.speedJump * dt;
+                if(this._enemies[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._enemies[i].x <= (-(this.viewport.offsetx) + canvas.width)) {
+                    this._enemies[i].rendering = true;
+                    this._enemies[i].moving = true;
                 } else {
-                    //console.log(collision.vertical);
-                }*/
-            //}
-            
+                    this._enemies[i].rendering = false;
+                }
 
-            
+                //Moving Enemies
+                if(this._enemies[i].moving) {
+                    this._enemies[i].move(dt);
+                    if(!collisionEnemy) {
+                        this._enemies[i].down(dt);
+                    }
+                }
 
-            //Control collision vertical
-            /*if(!this._player.isCollisionDown(this._plataforms[i], this.viewport)) {
-                //console.log(this._player.y + " vy: " + this._player.speedJump * dt + " DT: " + dt);
-                console.log(this._player.y + " | " + this._plataforms[i].y);
-                this._player.y += this._player.speedJump * dt;
-            } else {
-                //console.log(collision.vertical);
-            }*/
+                //Update
+                this._enemies[i].update(dt);
+            }
 
 
             //update player position
             this._player.Viewx = this.viewport.offsetx;
             this._player.Viewy = this.viewport.offsety;
             this._player.update(dt);
+
         }
     };
 
