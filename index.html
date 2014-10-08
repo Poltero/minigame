@@ -11,13 +11,23 @@
     #game {
         border: solid 1px;
     }
+
+    #float {
+        position: relative;
+        top:-280px;
+    }
     </style>
 </head>
 <body>
     <div id="game_screen">
         
         <canvas id="game"></canvas>
+        <!--<div id="float">
+            <progress id="progressbar" value="" max="100"></progress>
+        </div>-->
     </div>
+    
+    <div id="loadInfo" style="text-align:center"></div>
 </body>
 
 <script type="text/javascript" src="jquery.js"></script>
@@ -31,5 +41,7 @@
 <script type="text/javascript" src="scene.js"></script>
 <script type="text/javascript" src="levelNormal.js"></script>
 <script type="text/javascript" src="bonusOne.js"></script>
+<script type="text/javascript" src="wad.js"></script>
+<script type="text/javascript" src="music.js"></script>
 <script type="text/javascript" src="game.js"></script>
 </html>

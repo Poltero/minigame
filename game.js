@@ -16,6 +16,9 @@ var ctx = canvas.getContext('2d');
 canvas.width = 1024;
 canvas.height = 512;
 
+
+var contextAudio = new AudioContext()
+
 //Create an Viewport
 //var viewport = new Viewport(0,0);
 
@@ -32,32 +35,35 @@ var GameState = {
     }
 };
 
+var m;
+
 function main() {
     var now = Date.now();
     var dt = (now - lastTime) / 1000.0;
 
     update(dt);
+
     render();
 
     lastTime = now;
     requestAnimationFrame(main);
 }
 
-
 var currentLevel;
 
-resources.load([
-    'img/player.png',
-    'img/tile.png',
-    'img/bg.png',
-    'img/jump.png',
-    'img/enemy.png'
-]);
 
-resources.onReady(init);
+var musicFactory = new MusicFactory('music/', contextAudio);
 
-
-//init();
+//Load music
+//Load resources assets
+    resources.load([
+        'img/player.png',
+        'img/tile.png',
+        'img/bg.png',
+        'img/jump.png',
+        'img/enemy.png'
+    ]);
+    resources.onReady(init);
 
 
 
@@ -78,7 +84,33 @@ function update(dt) {
     currentLevel.update(dt, GameState.controls);
 }
 
+function initAssets() {
+    
+}
+
 function init() {
+    /*musicFactory.load([
+        {source: 'test.mp3', loop: true}
+    ]);
+    m = musicFactory.get('test.mp3');
+    console.log(m);*/
+
+    // Create lineOut
+    var lineOut = new WebAudiox.LineOut(contextAudio)
+
+    // load a sound and play it immediatly
+    $("#loadInfo").append("<p>Se empieza a cargar la musica... Espere..</p>");
+    WebAudiox.loadBuffer(contextAudio, 'music/test2.mp3', function(buffer){
+        //console.log("now");
+        // init AudioBufferSourceNode
+        var src  = contextAudio.createBufferSource();
+        src.buffer   = buffer
+        src.connect(lineOut.destination)
+
+        // start the sound now
+        $("#loadInfo").append("<h3>Play now</h3>");
+        src.start(0);
+    });
 
     currentLevel = new LevelNormal('level1.txt', 'img/bg.png');
     //currentLevel = new BonusOne("bonus1.txt");
