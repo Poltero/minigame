@@ -1,6 +1,6 @@
 (function(){
 
-    function MusicFactory(path, ctx, callback) {
+    function MusicFactory(path, ctx, callback, domElement) {
         this.path = path;
         var musicCache = {};
         this.count = 0;
@@ -17,20 +17,15 @@
                 var fullPath = this.path + source;
 
                 // Create lineOut
-                var lineOut = new WebAudiox.LineOut(ctx)
-                console.log("sdsd");
 
                 // load a sound and play it immediatly
                 WebAudiox.loadBuffer(ctx, fullPath, function(buffer){
-                    console.log("now");
+                    //console.log("Loaded buffer");
                     // init AudioBufferSourceNode
-                    var src  = ctx.createBufferSource();
-                    src.buffer   = buffer
-                    src.connect(lineOut.destination)
-                    src.loop = loop;
+                    
 
-                    // start the sound now
-                    musicCache[source] = src;
+                    upProgress(); 
+                    musicCache[source] = buffer;
 
                     if(isReady()) {
                         callback();
@@ -39,38 +34,26 @@
 
                 musicCache[source] = false;
 
-                //upProgress();
-                /*var music = new Audio();
-                music.src = fullPath;
-                music.loop = loop;
-                music.load();
-
-                /*music.onprogress = function() {
-                    console.log(music.buffered / music.duration);
-                };
-                //console.log("sd");
-
-                music.oncanplaythrough = function() {
-                    musicCache[source] = music;
-
-                    if(isReady()){
-                        //upProgress();
-                        //finale();
-                        callback();
-                    }
-                };
-
-                musicCache[source] = false;*/
-
             }
         };
 
         this.load = function(files) {
-            //elapsed = 50 / files.length;
+            elapsed = 50 / files.length;
 
             for(var i = 0; i < files.length; i++) {
                 this._load(files[i].source, files[i].loop);
             }
+        };
+
+        this.make = function(buffer, loop) {
+            //console.log(buffer);
+            var src  = ctx.createBufferSource();
+            var lineOut = new WebAudiox.LineOut(ctx)
+            src.buffer   = buffer
+            src.connect(lineOut.destination)
+            src.loop = loop;
+
+            return src;
         };
 
         this.get = function(source) {

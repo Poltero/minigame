@@ -1,6 +1,6 @@
 (function(){
 
-    function Scene(mapFile, playerSize, tileSize, audioFactory) {
+    function Scene(mapFile, playerSize, tileSize, audioFactory, sounds) {
         this._mapFile = mapFile;
         this._plataforms = [];
         this._player = null;
@@ -10,6 +10,7 @@
         this.viewport = new Viewport(0,0);
         this.npcs = [];
         this.audio = audioFactory;
+        this.sounds = sounds;
         //this.vision = 128;
     };
 
@@ -83,6 +84,9 @@
                 url: this._mapFile,
                 success: $.proxy(loadMap,this)
             });
+
+            //console.log(this.sounds.jump.buffer);
+
         },
 
         update: function(dt, controls) {
@@ -121,8 +125,10 @@
             }
 
             //Player
-            if(controls.up)
-                this.audio.get('test.wav').start(0);
+            if(controls.up) {
+                if(!this._player.jumped)
+                    this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(0);
+            }
             if(controls.up || this._player.jumped) {
                 this._player.jump(dt, collision);
             }

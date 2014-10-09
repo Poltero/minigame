@@ -52,7 +52,7 @@ function main() {
 var currentLevel;
 
 
-var musicFactory = new MusicFactory('music/', contextAudio, init);
+var musicFactory = new MusicFactory('music/', contextAudio, init, $("#progressbar"));
 
 //Load music
 //Load resources assets
@@ -85,6 +85,7 @@ function update(dt) {
 }
 
 function initMusic() {
+    $("#progressbar").val(50);
     musicFactory.load([
         {source: 'test3.wav', loop: true},
         {source: 'test.wav', loop: false}
@@ -115,10 +116,19 @@ function init() {
         src.start(0);
     });*/
 
-    var src = musicFactory.get('test3.wav');
-    src.start(0);
+    $("#progressbar").fadeOut(1000);
 
-    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory);
+    var buffer = musicFactory.get('test3.wav');
+    musicFactory.make(buffer, true).start(0);
+
+    var sounds = {
+        jump: {
+            buffer: musicFactory.get('test.wav'),
+            loop: false
+        }
+    };
+
+    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory, sounds);
     //currentLevel = new BonusOne("bonus1.txt");
 
 
