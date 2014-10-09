@@ -1,6 +1,6 @@
 (function(){
 
-    function Scene(mapFile, playerSize, tileSize) {
+    function Scene(mapFile, playerSize, tileSize, audioFactory) {
         this._mapFile = mapFile;
         this._plataforms = [];
         this._player = null;
@@ -9,6 +9,7 @@
         this._sizePlayer = playerSize;
         this.viewport = new Viewport(0,0);
         this.npcs = [];
+        this.audio = audioFactory;
         //this.vision = 128;
     };
 
@@ -120,6 +121,8 @@
             }
 
             //Player
+            if(controls.up)
+                this.audio.get('test.wav').start(0);
             if(controls.up || this._player.jumped) {
                 this._player.jump(dt, collision);
             }

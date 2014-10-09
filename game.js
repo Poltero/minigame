@@ -52,7 +52,7 @@ function main() {
 var currentLevel;
 
 
-var musicFactory = new MusicFactory('music/', contextAudio);
+var musicFactory = new MusicFactory('music/', contextAudio, init);
 
 //Load music
 //Load resources assets
@@ -63,7 +63,7 @@ var musicFactory = new MusicFactory('music/', contextAudio);
         'img/jump.png',
         'img/enemy.png'
     ]);
-    resources.onReady(init);
+    resources.onReady(initMusic);
 
 
 
@@ -84,8 +84,11 @@ function update(dt) {
     currentLevel.update(dt, GameState.controls);
 }
 
-function initAssets() {
-    
+function initMusic() {
+    musicFactory.load([
+        {source: 'test3.wav', loop: true},
+        {source: 'test.wav', loop: false}
+    ]);
 }
 
 function init() {
@@ -96,11 +99,11 @@ function init() {
     console.log(m);*/
 
     // Create lineOut
-    var lineOut = new WebAudiox.LineOut(contextAudio)
+    /*var lineOut = new WebAudiox.LineOut(contextAudio)
 
     // load a sound and play it immediatly
     $("#loadInfo").append("<p>Se empieza a cargar la musica... Espere..</p>");
-    WebAudiox.loadBuffer(contextAudio, 'music/test2.mp3', function(buffer){
+    WebAudiox.loadBuffer(contextAudio, 'music/test3.wav', function(buffer){
         //console.log("now");
         // init AudioBufferSourceNode
         var src  = contextAudio.createBufferSource();
@@ -110,9 +113,12 @@ function init() {
         // start the sound now
         $("#loadInfo").append("<h3>Play now</h3>");
         src.start(0);
-    });
+    });*/
 
-    currentLevel = new LevelNormal('level1.txt', 'img/bg.png');
+    var src = musicFactory.get('test3.wav');
+    src.start(0);
+
+    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory);
     //currentLevel = new BonusOne("bonus1.txt");
 
 

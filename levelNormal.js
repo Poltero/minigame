@@ -1,7 +1,7 @@
 (function () {
 
-    function LevelNormal(mapFile, bg) {
-        Scene.call(this, mapFile, 64, 32);
+    function LevelNormal(mapFile, bg, ctxAudio) {
+        Scene.call(this, mapFile, 64, 32, ctxAudio);
 
         this.background = resources.get(bg);
 

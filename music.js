@@ -1,6 +1,6 @@
 (function(){
 
-    function MusicFactory(path, ctx) {
+    function MusicFactory(path, ctx, callback) {
         this.path = path;
         var musicCache = {};
         this.count = 0;
@@ -27,10 +27,17 @@
                     var src  = ctx.createBufferSource();
                     src.buffer   = buffer
                     src.connect(lineOut.destination)
+                    src.loop = loop;
 
                     // start the sound now
                     musicCache[source] = src;
+
+                    if(isReady()) {
+                        callback();
+                    }
                 });
+
+                musicCache[source] = false;
 
                 //upProgress();
                 /*var music = new Audio();
