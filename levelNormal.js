@@ -19,7 +19,7 @@
 
             //Player
             if(controls.up) {
-                if(!this._player.jumped)
+                if(this.collision)
                     this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(0);
             }
             if(controls.up || this._player.jumped) {

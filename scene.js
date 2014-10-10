@@ -101,8 +101,6 @@
         },
 
         update: function(dt, controls) {
-            //console.log(this._player.y);
-
             if(controls.left) {
                 if((this._player.x-this.viewport.offsetx) <= this._player.x) {
                     this._player.x -= this._player.speed * dt;;
