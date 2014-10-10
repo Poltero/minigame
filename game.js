@@ -87,48 +87,20 @@ function update(dt) {
 function initMusic() {
     $("#progressbar").val(50);
     musicFactory.load([
-        {source: 'test3.wav', loop: true},
-        {source: 'test.wav', loop: false}
+        'test3.wav',
+        'test.wav'
     ]);
 }
 
 function init() {
-    /*musicFactory.load([
-        {source: 'test.mp3', loop: true}
-    ]);
-    m = musicFactory.get('test.mp3');
-    console.log(m);*/
-
-    // Create lineOut
-    /*var lineOut = new WebAudiox.LineOut(contextAudio)
-
-    // load a sound and play it immediatly
-    $("#loadInfo").append("<p>Se empieza a cargar la musica... Espere..</p>");
-    WebAudiox.loadBuffer(contextAudio, 'music/test3.wav', function(buffer){
-        //console.log("now");
-        // init AudioBufferSourceNode
-        var src  = contextAudio.createBufferSource();
-        src.buffer   = buffer
-        src.connect(lineOut.destination)
-
-        // start the sound now
-        $("#loadInfo").append("<h3>Play now</h3>");
-        src.start(0);
-    });*/
 
     $("#progressbar").fadeOut(1000);
 
     var buffer = musicFactory.get('test3.wav');
     musicFactory.make(buffer, true).start(0);
 
-    var sounds = {
-        jump: {
-            buffer: musicFactory.get('test.wav'),
-            loop: false
-        }
-    };
 
-    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory, sounds);
+    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory);
     //currentLevel = new BonusOne("bonus1.txt");
 
 

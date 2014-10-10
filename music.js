@@ -9,7 +9,7 @@
         var elapsed = 0;
         var ctx = ctx;
 
-        this._load = function(source, loop) {
+        this._load = function(source) {
             if(musicCache[source]) {
                 return musicCache[source];
             }
@@ -41,7 +41,7 @@
             elapsed = 50 / files.length;
 
             for(var i = 0; i < files.length; i++) {
-                this._load(files[i].source, files[i].loop);
+                this._load(files[i]);
             }
         };
 

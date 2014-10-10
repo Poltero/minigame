@@ -1,6 +1,6 @@
 (function(){
 
-    function Scene(mapFile, playerSize, tileSize, audioFactory, sounds) {
+    function Scene(mapFile, playerSize, tileSize, audioFactory) {
         this._mapFile = mapFile;
         this._plataforms = [];
         this._player = null;
@@ -10,7 +10,11 @@
         this.viewport = new Viewport(0,0);
         this.npcs = [];
         this.audio = audioFactory;
-        this.sounds = sounds;
+        this.sounds = {};
+        this.bgmusic;
+
+        this.collision = false;
+        this.collisionEnemy = false;
         //this.vision = 128;
     };
 
@@ -18,7 +22,6 @@
     Scene.prototype = {
 
         render: function(ctx) {
-            //ctx.fillStyle="#086A87";
             //Render Background
             ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety);
             //console.log(canvas.width);
@@ -85,8 +88,16 @@
                 success: $.proxy(loadMap,this)
             });
 
-            //console.log(this.sounds.jump.buffer);
-
+            this.sounds = {
+                jump: {
+                    buffer: this.audio.get('test.wav'),
+                    loop: false
+                },
+                bgmusic: {
+                    buffer: this.audio.get(this.bgmusic),
+                    loop: true
+                }
+            };
         },
 
         update: function(dt, controls) {
@@ -114,62 +125,14 @@
             }
 
 
-            //Detect Collisions
-            var collision = false, count = 0, collisionEnemy;
-            var vectorResult = false;
+            //Detect Collisions Down
+            this.collision = false;
             for(i = 0; i < this._plataforms.length; i++) {
                 if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
-                    collision = true;
+                    this.collision = true;
                     break;
                 }
             }
-
-            //Player
-            if(controls.up) {
-                if(!this._player.jumped)
-                    this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(0);
-            }
-            if(controls.up || this._player.jumped) {
-                this._player.jump(dt, collision);
-            }
-
-            if(!collision && !this._player.jumped) {
-                this._player.y += this._player.speedDown * dt;
-            }
-
-            //Enemies
-            for(i = 0; i < this._enemies.length; i++) {
-                collisionEnemy = false;
-                for(j = 0; j < this._plataforms.length; j++) {
-                    if(this._enemies[i].checkCollision(this._plataforms[j])) {
-                        collisionEnemy = true;
-                        break;
-                    }
-                }
-                if(this._enemies[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._enemies[i].x <= (-(this.viewport.offsetx) + canvas.width)) {
-                    this._enemies[i].rendering = true;
-                    this._enemies[i].moving = true;
-                } else {
-                    this._enemies[i].rendering = false;
-                }
-
-                //Moving Enemies
-                if(this._enemies[i].moving) {
-                    this._enemies[i].move(dt);
-                    if(!collisionEnemy) {
-                        this._enemies[i].down(dt);
-                    }
-                }
-
-                //Update
-                this._enemies[i].update(dt);
-            }
-
-
-            //update player position
-            this._player.Viewx = this.viewport.offsetx;
-            this._player.Viewy = this.viewport.offsety;
-            this._player.update(dt);
 
         }
     };
