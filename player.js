@@ -38,6 +38,23 @@
                     lP <= rT );
         };
 
+        this.checkCollisionEnemy = function(e, viewport) {
+            var realX = this.x + -(viewport.offsetx);
+
+            var lP = realX /* Ajuste */+ 18;
+            var rP = realX + this.width /* Ajuste */- 18;
+            var bP = this.y + this.height;
+            var lT = e.x;
+            var rT = e.x + e.width;
+            var tT = e.y;
+            var bT = e.y + e.height;
+
+            return ( bP >= tT &&
+                    bP < bT &&
+                    rP >= lT &&
+                    lP <= rT );
+        };
+
         this.jump = function(dt, collision) {
             if(!this.jumped && collision) {
                 this.finalY = Math.abs(this.y - this.pixelJump);
@@ -66,6 +83,10 @@
                 }
             }   
         };
+
+        this.shoot = function() {
+            return {x: this.x + this.width, y: this.y + this.height/2};
+        }
 
         
     };

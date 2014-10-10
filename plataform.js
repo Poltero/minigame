@@ -1,11 +1,12 @@
 (function(){
 
-    function Plataform(x, y, width, height, sprite) {
+    function Plataform(x, y, width, height, sprite, img) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this._sprite = new Sprite('img/tile.png', [x,y], [32,32], 0, [0,0], false, false, [0,0]);
+        console.log(img);
+        this._sprite = new Sprite(img, [x,y], [32,32], 0, [0,0], false, false, [0,0]);;
     };
 
     Plataform.prototype = {

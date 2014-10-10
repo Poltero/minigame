@@ -23,7 +23,7 @@
 
         render: function(ctx) {
             //Render Background
-            ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety);
+            ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety, 1024, 512);
             //console.log(canvas.width);
 
             //Render all plataforms
@@ -54,7 +54,19 @@
                     var c = map.charAt(i);
                     
                     if(c == '-') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png'));
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == 'l') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tilel.png'));
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == 'r') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tiler.png'));
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == 'i') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/relleno.png'));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '+') {

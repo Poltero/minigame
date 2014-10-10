@@ -62,7 +62,13 @@ var musicFactory = new MusicFactory('music/', contextAudio, init, $("#progressba
         'img/bg.png',
         'img/jump.png',
         'img/enemy.png',
-        'img/tpl.png'
+        'img/tpl.png',
+        'img/punio_left.png',
+        'img/punio_right.png',
+        'img/tilel.png',
+        'img/tiler.png',
+        'img/relleno.png'
+
     ]);
     resources.onReady(initMusic);
 
@@ -98,7 +104,7 @@ function init() {
     $("#progressbar").fadeOut(1000);
 
 
-    currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory);
+    currentLevel = new LevelNormal('level1s.txt', 'img/bg.png', musicFactory);
     //currentLevel = new BonusOne("bonus1.txt");
 
 

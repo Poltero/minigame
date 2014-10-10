@@ -5,6 +5,8 @@
 
         this.background = resources.get(bg);
         this.bgmusic = 'test3.wav';
+        this.flagSound = false;
+        this.bullets = [];
 
         this.init = function() {
             Scene.prototype.init.call(this);
@@ -13,24 +15,31 @@
             //this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop).start(0);
         };
 
+        this.render = function(ctx) {
+            Scene.prototype.render.call(this, ctx);
+
+            //Update Bullets
+            for(var i = 0; i < this.bullets.length; i++) {
+                if(this.bullets[i])
+                    this.bullets[i].render(ctx);
+            }
+        };
+
         //Functions
         this.update = function(dt, controls) {
             Scene.prototype.update.call(this, dt, controls);
 
             //Player
             if(controls.up) {
-                if(this.collision)
-                    this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(0);
+                if(this.collision && !flagSound) {
+                    this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(contextAudio.currentTime);
+                    flagSound = true;
+                }
             }
             if(controls.up || this._player.jumped) {
-                if(!this.jumpSprite) {
-                    if(this._player.dir == 'right') {
-                        this._player._sprite = this._player._spriteJumpRight;
-                    } else {
-                        this._player._sprite = this._player._spriteJumpLeft;
-                    }
-                }
                 this._player.jump(dt, this.collision);
+            } else {
+                flagSound = false;
             }
 
             if(!this.collision && !this._player.jumped) {
@@ -63,6 +72,30 @@
 
                 //Update
                 this._enemies[i].update(dt);
+            }
+
+            //Shoots
+            if(controls.space) {
+                var posy = this._player.y, posx = 0;
+                if((this._player.x-this.viewport.offsetx) <= this._player.x) {
+                    posx = this._player.x;
+                }
+                else {
+                    posx = ((this._player.x + this._player.width/2) - this.viewport.offsetx);
+                }
+                this.bullets.push(new Bullet(posx, posy, 300, this._player.dir));
+            }
+
+            //Update Bullets
+            for(var i = 0; i < this.bullets.length; i++) {
+                //console.log(this.bullets);
+                if(this.bullets[i]) {
+                    if(this.bullets[i].x >= -(this.viewport.offsetx+this._sizeTile) && this.bullets[i].x <= (-(this.viewport.offsetx) + canvas.width)) {
+                        this.bullets[i].update(dt);
+                    } else {
+                        delete this.bullets[i];
+                    }
+                }
             }
 
 

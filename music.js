@@ -8,6 +8,7 @@
         var callback = callback;
         var elapsed = 0;
         var ctx = ctx;
+        var volume = ctx.createGain();
 
         this._load = function(source) {
             if(musicCache[source]) {
@@ -45,12 +46,15 @@
             }
         };
 
-        this.make = function(buffer, loop) {
+        this.make = function(buffer, loop, vol) {
             //console.log(buffer);
             var src  = ctx.createBufferSource();
-            var lineOut = new WebAudiox.LineOut(ctx)
             src.buffer   = buffer
-            src.connect(lineOut.destination)
+
+            volume.gain.value = vol || 0.4;
+
+            src.connect(volume);
+            volume.connect(ctx.destination);
             src.loop = loop;
 
             return src;
