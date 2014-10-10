@@ -61,7 +61,8 @@ var musicFactory = new MusicFactory('music/', contextAudio, init, $("#progressba
         'img/tile.png',
         'img/bg.png',
         'img/jump.png',
-        'img/enemy.png'
+        'img/enemy.png',
+        'img/tpl.png'
     ]);
     resources.onReady(initMusic);
 
@@ -95,9 +96,6 @@ function initMusic() {
 function init() {
 
     $("#progressbar").fadeOut(1000);
-
-    var buffer = musicFactory.get('test3.wav');
-    musicFactory.make(buffer, true).start(0);
 
 
     currentLevel = new LevelNormal('level1.txt', 'img/bg.png', musicFactory);

@@ -102,14 +102,25 @@
 
         update: function(dt, controls) {
             if(controls.left) {
+                if(this._player.dir != 'left') {
+                    this._player.dir = 'left';
+                    this._player._sprite = this._player._spriteLeft;
+                }
                 if((this._player.x-this.viewport.offsetx) <= this._player.x) {
                     this._player.x -= this._player.speed * dt;;
                 }
                 else {
                     this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
                 }
+
+                this._player.runAnimations();
             }
+
             if(controls.right) {
+                if(this._player.dir != 'right') {
+                    this._player.dir = 'right';
+                    this._player._sprite = this._player._spriteRight;
+                }
                 if(this.viewport.pixelActivate > this._player.x) {
                     this._player.x += this._player.speed * dt;
                 }
@@ -118,10 +129,11 @@
                 }
 
                 this._player.runAnimations();
-            } else {
-                this._player.stopAnimations();
             }
 
+            if(!controls.left && !controls.right) {
+                this._player.stopAnimations();
+            }
 
             //Detect Collisions Down
             this.collision = false;

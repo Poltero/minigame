@@ -1,5 +1,5 @@
 (function() {
-    function Sprite(url, pos, size, speed, frames, dir, once) {
+    function Sprite(url, pos, size, speed, frames, dir, once, posTpl) {
         this.pos = pos;
         this.size = size;
         this.speed = typeof speed === 'number' ? speed : 0;
@@ -9,6 +9,7 @@
         this.dir = dir || 'horizontal';
         this.once = once;
         this.active = false;
+        this.posTpl = posTpl;
     };
 
     Sprite.prototype = {
@@ -37,8 +38,8 @@
 
             var x = this.pos[0];
             var y = this.pos[1];
-            var xp = 0;
-            var yp = 0;
+            var xp = this.posTpl[0];
+            var yp = this.posTpl[1];
 
             if(this.dir == 'vertical') {
                 yp += frame * this.size[1];
@@ -47,6 +48,7 @@
                 xp += frame * this.size[0];
             }
 
+            //console.log(this.active);
             //Debug options
             //console.log("x: " + x + " | y: " + y);
             //ctx.fillText(x, x-vx, y-vy);

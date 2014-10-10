@@ -10,7 +10,7 @@
             Scene.prototype.init.call(this);
 
             //Run Background music
-            this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop).start(0);
+            //this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop).start(0);
         };
 
         //Functions
@@ -23,6 +23,13 @@
                     this.audio.make(this.sounds.jump.buffer, this.sounds.jump.loop).start(0);
             }
             if(controls.up || this._player.jumped) {
+                if(!this.jumpSprite) {
+                    if(this._player.dir == 'right') {
+                        this._player._sprite = this._player._spriteJumpRight;
+                    } else {
+                        this._player._sprite = this._player._spriteJumpLeft;
+                    }
+                }
                 this._player.jump(dt, this.collision);
             }
 

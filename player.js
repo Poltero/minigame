@@ -2,8 +2,10 @@
 
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
-        this._spriteRight = new Sprite('img/player.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal');
-        this._spriteJump = new Sprite('img/jump.png', [x,y], [width,height], 0, [0,0]);
+        this._spriteRight = new Sprite('img/tpl.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal',false,[0,0]);
+        this._spriteLeft = new Sprite('img/tpl.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal',false,[0,64]);
+        this._spriteJumpRight = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [704,0]);
+        this._spriteJumpLeft = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [704,64]);
         this._sprite = this._spriteRight;
         this.x = x;
         this.y = y;
@@ -17,6 +19,7 @@
         this.jumped = false;
         this.finalY = 0;
         this.pixelJump = 85;
+        this.dir = 'right';
 
         this.checkCollision = function(p, viewport) {
             var realX = this.x + -(viewport.offsetx);
@@ -39,16 +42,27 @@
             if(!this.jumped && collision) {
                 this.finalY = Math.abs(this.y - this.pixelJump);
                 this.jumped = true;
-                this._sprite = this._spriteJump;
+                if(this.dir == 'right') {
+                        this._sprite = this._spriteJumpRight;
+                    } else {
+                        this._sprite = this._spriteJumpLeft;
+                    }
             }
             if(this.jumped) {
-                //console.log(this.y + " | " + this.finalY);
+                
+                if(!this.jumpSprite)
+
                 if(this.y >= this.finalY) {
                     this.y -= this.speedJump * dt;
                     //console.log("Current: " + this.y);
                 } else {
                     this.jumped = false;
-                    this._sprite = this._spriteRight;
+                    if(this.dir == 'right') {
+                        this._sprite = this._spriteRight;
+                    } else {
+                        this._sprite = this._spriteLeft;
+                    }
+                    
                 }
             }   
         };
