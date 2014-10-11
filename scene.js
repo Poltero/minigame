@@ -54,19 +54,19 @@
                     var c = map.charAt(i);
                     
                     if(c == '-') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png'));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png', c));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == 'l') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tilel.png'));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tilel.png', c));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == 'r') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tiler.png'));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tiler.png', c));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == 'i') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/relleno.png'));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/relleno.png', c));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '+') {
@@ -150,9 +150,11 @@
             //Detect Collisions Down
             this.collision = false;
             for(i = 0; i < this._plataforms.length; i++) {
-                if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
-                    this.collision = true;
-                    break;
+                if(this._plataforms[i].type != 'i') {
+                    if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
+                        this.collision = true;
+                        break;
+                    }
                 }
             }
 

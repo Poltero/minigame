@@ -1,11 +1,11 @@
 (function(){
 
-    function Plataform(x, y, width, height, sprite, img) {
+    function Plataform(x, y, width, height, sprite, img, type) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        console.log(img);
+        this.type = type;
         this._sprite = new Sprite(img, [x,y], [32,32], 0, [0,0], false, false, [0,0]);;
     };
 
