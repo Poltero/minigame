@@ -70,7 +70,7 @@
                         posx = posx + this._sizeTile;
                     }
                     else if(c == '+') {
-                        this._enemies.push(new Enemy(posx,posy,this._sizeTile,this._sizeTile,100,null));
+                        this._enemies.push(new Enemy(posx,posy,this._sizePlayer,this._sizePlayer,100,null));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == ' ') {
@@ -112,7 +112,7 @@
             };
         },
 
-        update: function(dt, controls) {
+        update: function(dt, controls, gamestate) {
             if(controls.left) {
                 if(this._player.dir != 'left') {
                     this._player.dir = 'left';
@@ -143,7 +143,7 @@
                 this._player.runAnimations();
             }
 
-            if(!controls.left && !controls.right) {
+            if(!controls.left && !controls.right && !this._player.shooting) {
                 this._player.stopAnimations();
             }
 

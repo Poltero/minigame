@@ -10,6 +10,11 @@
         this.once = once;
         this.active = false;
         this.posTpl = posTpl;
+        this.done = false;
+
+        this.isDone = function() {
+            return this.done;
+        }
     };
 
     Sprite.prototype = {
@@ -28,7 +33,7 @@
 
                 if(this.once && idx >= max) {
                     this.done = true;
-                    return;
+                    //return;
                 }
             }
             else {
@@ -69,6 +74,8 @@
             if(this.active) {
                 this.active = false;
                 this._index = 0;
+                if(this.done)
+                    this.done = false;
             }
         }
     };

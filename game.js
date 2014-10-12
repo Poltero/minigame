@@ -32,6 +32,12 @@ var GameState = {
         right: false,
         space: false,
         up: false
+    },
+
+    game: {
+        start: false,
+        die: false,
+        splash: true
     }
 };
 
@@ -88,7 +94,7 @@ function render() {
 
 function update(dt) {
     handlerInput();
-    currentLevel.update(dt, GameState.controls);
+    currentLevel.update(dt, GameState.controls, GameState.game);
 }
 
 function initMusic() {

@@ -3,9 +3,14 @@
     function Player(x, y, width, height, speed, srpite) {
         //this.entity = new Entity(x,y,null);
         this._spriteRight = new Sprite('img/tpl.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal',false,[0,0]);
-        this._spriteLeft = new Sprite('img/tpl.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal',false,[0,64]);
+        this._spriteLeft = new Sprite('img/tpl.png', [x,y], [width,height], 10, [1,2,3,4,5,6,7,8,9,10], 'horizontal',false,[768,0]);
         this._spriteJumpRight = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [704,0]);
-        this._spriteJumpLeft = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [704,64]);
+        this._spriteJumpLeft = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [1472,0]);
+        this._spriteShootRight = new Sprite('img/tpl.png', [x,y], [width,height], 10, [0,1,2], 'horizontal', true, [1536,0]);
+        this._spriteShootLeft = new Sprite('img/tpl.png', [x,y], [width,height], 10, [0,1,2], 'horizontal', true, [1728,0]);
+        this._spriteDieRight = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [1920,0]);
+        this._spriteDieLeft = new Sprite('img/tpl.png', [x,y], [width,height], 0, [0,0], false, false, [1984,0]);
+
         this._sprite = this._spriteRight;
         this.x = x;
         this.y = y;
@@ -20,6 +25,8 @@
         this.finalY = 0;
         this.pixelJump = 85;
         this.dir = 'right';
+        this.shooting = false;
+        this.isDie = false;
 
         this.checkCollision = function(p, viewport) {
             var realX = this.x + -(viewport.offsetx);
@@ -50,7 +57,7 @@
             var bT = e.y + e.height;
 
             return ( bP >= tT &&
-                    bP < bT &&
+                    bP >= bT &&
                     rP >= lT &&
                     lP <= rT );
         };
@@ -59,25 +66,28 @@
             if(!this.jumped && collision) {
                 this.finalY = Math.abs(this.y - this.pixelJump);
                 this.jumped = true;
-                if(this.dir == 'right') {
+                if(!this.isDie) {
+                    if(this.dir == 'right') {
                         this._sprite = this._spriteJumpRight;
                     } else {
                         this._sprite = this._spriteJumpLeft;
                     }
+                }
             }
             if(this.jumped) {
-                
-                if(!this.jumpSprite)
+                //if(!this.jumpSprite)
 
                 if(this.y >= this.finalY) {
                     this.y -= this.speedJump * dt;
                     //console.log("Current: " + this.y);
                 } else {
                     this.jumped = false;
-                    if(this.dir == 'right') {
-                        this._sprite = this._spriteRight;
-                    } else {
-                        this._sprite = this._spriteLeft;
+                    if(!this.isDie) {
+                        if(this.dir == 'right') {
+                            this._sprite = this._spriteRight;
+                        } else {
+                            this._sprite = this._spriteLeft;
+                        }
                     }
                     
                 }
@@ -85,8 +95,32 @@
         };
 
         this.shoot = function() {
-            return {x: this.x + this.width, y: this.y + this.height/2};
-        }
+            if(this.dir == 'right') {
+                this._sprite = this._spriteShootRight;
+            } else {
+                this._sprite = this._spriteShootLeft;
+            }
+            
+        };
+
+        this.idle = function() {
+            if(this.dir == 'right') {
+                this._sprite = this._spriteRight;
+            } else {
+                this._sprite = this._spriteLeft;
+            }
+        };
+
+        this.die = function(dt) {
+            if(this.dir == 'right') {
+                this._sprite = this._spriteDieRight;
+            } else {
+                this._sprite = this._spriteDieLeft;
+            }
+
+            this.isDie = true;
+            this.jump(dt, true);
+        };
 
         
     };
@@ -126,6 +160,10 @@
 
         stopAnimations: function() {
             this._sprite.deactivate();
+        },
+
+        isFinaleShooting: function() {
+            return this._sprite.isDone();
         }
     };
 

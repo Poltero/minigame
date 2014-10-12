@@ -3,6 +3,8 @@
     function Bullet(x, y, speed, dir) {
         this.x = x;
         this.y = y;
+        this.width = 32;
+        this.height = 32;
         this.speed = speed;
         this.dir = dir || 'right';
         this._sprite = (dir == 'right') ? new Sprite('img/punio_right.png', [x,y], [32,32], 0, [0,0], false, false, [0,0]) : new Sprite('img/punio_left.png', [x,y], [32,32], 0, [0,0], false, false, [0,0]);
