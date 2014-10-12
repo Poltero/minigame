@@ -15,6 +15,9 @@
 
         this.collision = false;
         this.collisionEnemy = false;
+        this.lasttime = 0;
+        this.timeSplash = 2;
+        this.bg;
         //this.vision = 128;
     };
 
@@ -23,28 +26,29 @@
 
         render: function(ctx) {
             //Render Background
-            ctx.drawImage(this.background, -this.viewport.offsetx, -this.viewport.offsety, 1024, 512);
+            ctx.drawImage(this.bg, -this.viewport.offsetx, -this.viewport.offsety, 1024, 512);
             //console.log(canvas.width);
 
-            //Render all plataforms
-            for(i = 0; i < this._plataforms.length; i++) {
-                if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + canvas.width))
-                    this._plataforms[i].render(ctx);
+            if(GameState.game != 'splash') {
+                //Render all plataforms
+                for(i = 0; i < this._plataforms.length; i++) {
+                    if(this._plataforms[i].x >= -(this.viewport.offsetx+this._sizeTile) && this._plataforms[i].x <= (-(this.viewport.offsetx) + canvas.width))
+                        this._plataforms[i].render(ctx);
+                }
+
+                //Render all Enemies
+                for(i = 0; i < this._enemies.length; i++) {
+                    if(this._enemies[i].rendering)
+                        this._enemies[i].render(ctx);
+                }       
+
+                //Render player
+                this._player.draw(ctx);
+                //console.log(this.player.entity.pos[0]);
             }
-
-            //Render all Enemies
-            for(i = 0; i < this._enemies.length; i++) {
-                if(this._enemies[i].rendering)
-                    this._enemies[i].render(ctx);
-            }       
-
-            //Render player
-            this._player.draw(ctx);
-            //console.log(this.player.entity.pos[0]);
         },
 
         init: function() {
-
             var loadMap = function(data) {
                 var map = data;
                 var posx = 0, posy = 0;
@@ -112,52 +116,81 @@
             };
         },
 
-        update: function(dt, controls, gamestate) {
-            if(controls.left) {
-                if(this._player.dir != 'left') {
-                    this._player.dir = 'left';
-                    this._player._sprite = this._player._spriteLeft;
-                }
-                if((this._player.x-this.viewport.offsetx) <= this._player.x) {
-                    this._player.x -= this._player.speed * dt;;
-                }
-                else {
-                    this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
+        update: function(dt, controls) {
+            if(GameState.game == 'start') {
+                if(controls.left) {
+                    if(this._player.dir != 'left') {
+                        this._player.dir = 'left';
+                        this._player._sprite = this._player._spriteLeft;
+                    }
+                    if((this._player.x-this.viewport.offsetx) <= this._player.x) {
+                        this._player.x -= this._player.speed * dt;;
+                    }
+                    else {
+                        this.viewport.offsetx += (0.5 + (this._player.speed * dt)) << 0;
+                    }
+
+                    this._player.runAnimations();
                 }
 
-                this._player.runAnimations();
-            }
+                if(controls.right) {
+                    if(this._player.dir != 'right') {
+                        this._player.dir = 'right';
+                        this._player._sprite = this._player._spriteRight;
+                    }
+                    if(this.viewport.pixelActivate > this._player.x) {
+                        this._player.x += this._player.speed * dt;
+                    }
+                    else {
+                        this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
+                    }
 
-            if(controls.right) {
-                if(this._player.dir != 'right') {
-                    this._player.dir = 'right';
-                    this._player._sprite = this._player._spriteRight;
+                    this._player.runAnimations();
                 }
-                if(this.viewport.pixelActivate > this._player.x) {
-                    this._player.x += this._player.speed * dt;
-                }
-                else {
-                    this.viewport.offsetx -= (0.5 +(this._player.speed * dt)) << 0;
+
+                if(!controls.left && !controls.right && !this._player.shooting) {
+                    this._player.stopAnimations();
                 }
 
-                this._player.runAnimations();
-            }
-
-            if(!controls.left && !controls.right && !this._player.shooting) {
-                this._player.stopAnimations();
-            }
-
-            //Detect Collisions Down
-            this.collision = false;
-            for(i = 0; i < this._plataforms.length; i++) {
-                if(this._plataforms[i].type != 'i') {
-                    if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
-                        this.collision = true;
-                        break;
+                //Detect Collisions Down
+                this.collision = false;
+                for(i = 0; i < this._plataforms.length; i++) {
+                    if(this._plataforms[i].type != 'i') {
+                        if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
+                            this.collision = true;
+                            break;
+                        }
                     }
                 }
-            }
 
+            }
+            else if(GameState.game == 'splash') {
+                //Show Splash
+                this.bg = this.splash;
+                this.lasttime += dt;
+
+                if(this.lasttime >= this.timeSplash) {
+                    this.bg = this.background;
+                    GameState.game = 'start';
+                    //Run Background music
+                    this.music = this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop);
+                    this.music.start(0);
+                }
+
+            }
+        },
+
+        reset: function() {
+            this._plataforms = [];
+            this._player = null;
+            this._enemies = [];
+            this.viewport = new Viewport(0,0);
+            this.npcs = [];
+            this.sounds = {};
+
+            this.collision = false;
+            this.collisionEnemy = false;
+            this.lasttime = 0;
         }
     };
 

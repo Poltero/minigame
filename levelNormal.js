@@ -8,12 +8,17 @@
         this.bgmusic = 'test3.wav';
         this.flagSound = false;
         this.bullets = [];
+        this.music = null;
+
+        this.reset = function() {
+            Scene.prototype.reset.call(this);
+            this.bullets = [];
+            this.flagSound = false;
+            this.music = null;
+        }
 
         this.init = function() {
             Scene.prototype.init.call(this);
-
-            //Run Background music
-            //this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop).start(0);
         };
 
         this.render = function(ctx) {
@@ -28,8 +33,9 @@
 
         //Functions
         this.update = function(dt, controls) {
-            if(GameState.game != 'die') {
-                Scene.prototype.update.call(this, dt, controls);
+            Scene.prototype.update.call(this, dt, controls);
+
+            if(GameState.game == 'start') {
 
                 //Player
                 if(controls.up) {
@@ -169,10 +175,19 @@
                 }
             }
 
-            //update player position
-            this._player.Viewx = this.viewport.offsetx;
-            this._player.Viewy = this.viewport.offsety;
-            this._player.update(dt);
+            //Die Player for fallen
+            if(this._player.y >= 570) {
+                GameState.game = 'reset';
+                this.music.stop();
+                this.reset();
+            }
+
+            if(GameState.game == 'start' || GameState.game == 'die') {
+                //update player position
+                this._player.Viewx = this.viewport.offsetx;
+                this._player.Viewy = this.viewport.offsety;
+                this._player.update(dt);
+            }
         };
     };
 

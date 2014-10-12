@@ -17,6 +17,8 @@ canvas.width = 1024;
 canvas.height = 512;
 
 
+
+
 var contextAudio = new AudioContext()
 
 //Create an Viewport
@@ -34,7 +36,8 @@ var GameState = {
         up: false
     },
 
-    game: 'splash'
+    game: 'splash',
+    currentLevel: 0
 };
 
 var m;
@@ -44,44 +47,51 @@ function main() {
     var dt = (now - lastTime) / 1000.0;
 
     update(dt);
-
-    render();
+    if(GameState.game != 'reset') {
+        render();
+    }
+    else {
+        init();
+    }
 
     lastTime = now;
     requestAnimationFrame(main);
 }
 
-var currentLevel;
-
 
 var musicFactory = new MusicFactory('music/', contextAudio, init, $("#progressbar"));
 
-//Load music
 //Load resources assets
-    resources.load([
-        'img/player.png',
-        'img/tile.png',
-        'img/bg.png',
-        'img/jump.png',
-        'img/enemy.png',
-        'img/tpl.png',
-        'img/punio_left.png',
-        'img/punio_right.png',
-        'img/tilel.png',
-        'img/tiler.png',
-        'img/relleno.png'
+resources.load([
+    'img/player.png',
+    'img/tile.png',
+    'img/bg.png',
+    'img/jump.png',
+    'img/enemy.png',
+    'img/tpl.png',
+    'img/punio_left.png',
+    'img/punio_right.png',
+    'img/tilel.png',
+    'img/tiler.png',
+    'img/relleno.png',
+    'img/lvl1.png'
 
-    ]);
-    resources.onReady(initMusic);
+]);
+resources.onReady(initMusicAndLevels);
+
+
+//Levels
+var levels = [];
+
 
 
 
 function render() {
     ctx.save();
-    ctx.translate(currentLevel.viewport.offsetx, currentLevel.viewport.offsety);
-    ctx.clearRect(-currentLevel.viewport.offsetx, -currentLevel.viewport.offsety, canvas.width,canvas.height);
+    ctx.translate(levels[GameState.currentLevel].viewport.offsetx, levels[GameState.currentLevel].viewport.offsety);
+    ctx.clearRect(-levels[GameState.currentLevel].viewport.offsetx, -levels[GameState.currentLevel].viewport.offsety, canvas.width,canvas.height);
 
-    currentLevel.render(ctx);
+    levels[GameState.currentLevel].render(ctx);
 
 
     ctx.restore();
@@ -90,29 +100,29 @@ function render() {
 
 function update(dt) {
     handlerInput();
-    currentLevel.update(dt, GameState.controls);
+    levels[GameState.currentLevel].update(dt, GameState.controls);
 }
 
-function initMusic() {
+function initMusicAndLevels() {
     $("#progressbar").val(50);
     musicFactory.load([
         'test3.wav',
         'test.wav'
     ]);
+
+    //InitLevels
+    levels[0] =  new LevelNormal('level1s.txt', 'img/bg.png', 'img/lvl1.png', musicFactory);
 }
 
 function init() {
 
     $("#progressbar").fadeOut(1000);
 
-
-    currentLevel = new LevelNormal('level1s.txt', 'img/bg.png', 'img/bg.png', musicFactory);
-    //currentLevel = new BonusOne("bonus1.txt");
-
-
-    currentLevel.init();
+    levels[GameState.currentLevel].init();
 
     lastTime = Date.now();
+
+    GameState.game = 'splash';
 
     main();
 
