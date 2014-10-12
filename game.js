@@ -34,11 +34,7 @@ var GameState = {
         up: false
     },
 
-    game: {
-        start: false,
-        die: false,
-        splash: true
-    }
+    game: 'splash'
 };
 
 var m;
@@ -94,7 +90,7 @@ function render() {
 
 function update(dt) {
     handlerInput();
-    currentLevel.update(dt, GameState.controls, GameState.game);
+    currentLevel.update(dt, GameState.controls);
 }
 
 function initMusic() {
@@ -110,7 +106,7 @@ function init() {
     $("#progressbar").fadeOut(1000);
 
 
-    currentLevel = new LevelNormal('level1s.txt', 'img/bg.png', musicFactory);
+    currentLevel = new LevelNormal('level1s.txt', 'img/bg.png', 'img/bg.png', musicFactory);
     //currentLevel = new BonusOne("bonus1.txt");
 
 

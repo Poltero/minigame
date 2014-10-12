@@ -1,9 +1,10 @@
 (function () {
 
-    function LevelNormal(mapFile, bg, ctxAudio) {
+    function LevelNormal(mapFile, bg, bgsplash, ctxAudio) {
         Scene.call(this, mapFile, 64, 32, ctxAudio);
 
         this.background = resources.get(bg);
+        this.splash = resources.get(bgsplash);
         this.bgmusic = 'test3.wav';
         this.flagSound = false;
         this.bullets = [];
@@ -26,9 +27,9 @@
         };
 
         //Functions
-        this.update = function(dt, controls, gamestate) {
-            if(!gamestate.die) {
-                Scene.prototype.update.call(this, dt, controls, gamestate);
+        this.update = function(dt, controls) {
+            if(GameState.game != 'die') {
+                Scene.prototype.update.call(this, dt, controls);
 
                 //Player
                 if(controls.up) {
@@ -84,7 +85,8 @@
                     if(!this._enemies[i].isDie) {
                         if(this._player.checkCollisionEnemy(this._enemies[i], this.viewport)) {
                             this._player.die(dt);
-                            gamestate.die = true;
+                            GameState.game = 'die';
+                            //console.log(GameState.game);
                             break;
                         }
                     }
@@ -113,7 +115,7 @@
                 }
             }
 
-            if(gamestate.die) {
+            if(GameState.game == 'die') {
                 if(this._player.jumped) {
                     this._player.jump(dt, false);
                 } else {
@@ -121,7 +123,7 @@
                 }
             }
 
-            if(!gamestate.die) {
+            if(GameState.game != 'die') {
 
                 //Shoots
                 if(this._player.shooting) {
