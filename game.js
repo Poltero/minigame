@@ -74,7 +74,9 @@ resources.load([
     'img/tilel.png',
     'img/tiler.png',
     'img/relleno.png',
-    'img/lvl1.png'
+    'img/lvl1.png',
+    'img/boss.png',
+    'img/cacacoin.png'
 
 ]);
 resources.onReady(initMusicAndLevels);
@@ -111,7 +113,7 @@ function initMusicAndLevels() {
     ]);
 
     //InitLevels
-    levels[0] =  new LevelNormal('level1s.txt', 'img/bg.png', 'img/lvl1.png', musicFactory);
+    levels[0] =  new LevelNormal('level1s.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
 }
 
 function init() {

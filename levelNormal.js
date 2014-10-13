@@ -1,14 +1,20 @@
 (function () {
 
-    function LevelNormal(mapFile, bg, bgsplash, ctxAudio) {
+    function LevelNormal(mapFile, bg, posSp, posBg, ctxAudio) {
         Scene.call(this, mapFile, 64, 32, ctxAudio);
 
         this.background = resources.get(bg);
-        this.splash = resources.get(bgsplash);
+        this.xSplash = posSp[0];
+        this.ySplash = posSp[1];
+        this.xBackgroud = posBg[0];
+        this.yBackgroud = posBg[1];
         this.bgmusic = 'test3.wav';
         this.flagSound = false;
         this.bullets = [];
         this.music = null;
+        this.finale = false;
+        this.coins = [];
+        this.score = $("#score");
 
         this.reset = function() {
             Scene.prototype.reset.call(this);
@@ -19,16 +25,28 @@
 
         this.init = function() {
             Scene.prototype.init.call(this);
+
         };
 
         this.render = function(ctx) {
             Scene.prototype.render.call(this, ctx);
 
-            //Update Bullets
+            //Render Bullets
             for(var i = 0; i < this.bullets.length; i++) {
                 if(this.bullets[i])
                     this.bullets[i].render(ctx);
             }
+
+            //Render all coins
+            if(GameState.game == 'start') {
+                for(var i = 0; i < this.coins.length; i++) {
+                    if(this.coins[i])
+                        this.coins[i].render(ctx);
+                }
+            }
+
+            //Redner Boss
+            this.boss.render(ctx);
         };
 
         //Functions
@@ -119,6 +137,56 @@
                     //Update
                     this._enemies[i].update(dt);
                 }
+
+                //Collision player with coins
+                for(var i = 0; i < this.coins.length; i++) {
+                    if(this.coins[i]) {
+                        if(this._player.checkCollisionEnemy(this.coins[i], this.viewport)) {
+                            //+ Score
+                            var scoreLast = ~~this.score.text();
+                            this.score.text(scoreLast + this.coins[i].score);
+
+                            delete this.coins[i];
+                        }
+                    }
+                }
+
+                //Collision player with special plataforms
+                for(j = 0; j < this._plataforms.length; j++) {
+                    
+                    if(this._plataforms[j].type == 'o') {
+                        if(this._player.checkCollisionEnemy(this._plataforms[j], this.viewport)) {
+                            if(!this.finale)
+                                this.finale = true;
+                            for(var o = 0; o < this._plataforms.length; o++) {
+                                if(this._plataforms[o].type == 'k') {
+                                    if(!this._plataforms[o].fallen) {
+                                        this._plataforms[o].broken();
+
+                                        //Create plataforms of background
+                                        this._plataforms.push(new Plataform(this._plataforms[o].lastX,this._plataforms[o].lastY,this._sizeTile,this._sizeTile,null, 'img/relleno.png', 'i'));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                //Fallen special plataforms whenever finale is true
+                if(this.finale) {
+                    if(this.boss.hidden)
+                        this.boss.hidden = false;
+                    for(var o = 0; o < this._plataforms.length; o++) {
+                        if(this._plataforms[o].type == 'k') {
+                            if(this.specials > 0) {
+                                //this._plataforms[o].Viewx = this.viewport.offsetx;
+                                this._plataforms[o].update(dt);
+                                if(this._plataforms[o].endDisapear)
+                                    this.specials--;
+                            }
+                        }
+                    }
+                }
             }
 
             if(GameState.game == 'die') {
@@ -178,7 +246,7 @@
             //Die Player for fallen
             if(this._player.y >= 570) {
                 GameState.game = 'reset';
-                this.music.stop();
+                //this.music.stop();
                 this.reset();
             }
 
@@ -187,6 +255,8 @@
                 this._player.Viewx = this.viewport.offsetx;
                 this._player.Viewy = this.viewport.offsety;
                 this._player.update(dt);
+
+                this.boss.update(dt);
             }
         };
     };

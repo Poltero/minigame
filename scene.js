@@ -17,7 +17,12 @@
         this.collisionEnemy = false;
         this.lasttime = 0;
         this.timeSplash = 2;
-        this.bg;
+        this.xTpl;
+        this.yTpl;
+        this.specials = 0;
+        this.boss = null;
+        this._sizeBoss = 128;
+        this._sizeCoin = 16;
         //this.vision = 128;
     };
 
@@ -26,7 +31,7 @@
 
         render: function(ctx) {
             //Render Background
-            ctx.drawImage(this.bg, -this.viewport.offsetx, -this.viewport.offsety, 1024, 512);
+            ctx.drawImage(this.background, this.xTpl, this.yTpl, 1024, 512, -this.viewport.offsetx, -this.viewport.offsety, 1024, 512);
             //console.log(canvas.width);
 
             if(GameState.game != 'splash') {
@@ -45,6 +50,9 @@
                 //Render player
                 this._player.draw(ctx);
                 //console.log(this.player.entity.pos[0]);
+
+                //score
+                $("#infoScore").fadeIn(1);
             }
         },
 
@@ -76,6 +84,23 @@
                     else if(c == '+') {
                         this._enemies.push(new Enemy(posx,posy,this._sizePlayer,this._sizePlayer,100,null));
                         posx = posx + this._sizeTile;
+                    }
+                    else if(c == 'k') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png', c));
+                        posx = posx + this._sizeTile;
+                        this.specials++;
+                    }
+                    else if(c == 'o') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png', c));
+                        posx = posx + this._sizeTile;
+                    }
+                    else if(c == 'b') {
+                        this.boss = new Boss(posx, posy, this._sizeBoss, this._sizeBoss, 0.2);
+                        posx = posx + this._sizeBoss;
+                    }
+                    else if(c == 'c') {
+                        this.coins.push(new Coin(posx, posy));
+                        posx = posx + this._sizeCoin;
                     }
                     else if(c == ' ') {
                         posx = posx + this._sizeTile;
@@ -155,7 +180,7 @@
                 //Detect Collisions Down
                 this.collision = false;
                 for(i = 0; i < this._plataforms.length; i++) {
-                    if(this._plataforms[i].type != 'i') {
+                    if(this._plataforms[i].type != 'i' && this._plataforms[i].type != 'o') {
                         if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
                             this.collision = true;
                             break;
@@ -166,15 +191,17 @@
             }
             else if(GameState.game == 'splash') {
                 //Show Splash
-                this.bg = this.splash;
+                this.xTpl = this.xSplash;
+                this.yTpl = this.ySplash;
                 this.lasttime += dt;
 
                 if(this.lasttime >= this.timeSplash) {
-                    this.bg = this.background;
+                    this.xTpl = this.xBackgroud;
+                    this.yTpl = this.yBackgroud;
                     GameState.game = 'start';
                     //Run Background music
-                    this.music = this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop);
-                    this.music.start(0);
+                    //this.music = this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop);
+                    //this.music.start(0);
                 }
 
             }
