@@ -37,7 +37,7 @@ var GameState = {
     },
 
     game: 'splash',
-    currentLevel: 0
+    currentLevel: 1
 };
 
 var m;
@@ -76,7 +76,9 @@ resources.load([
     'img/relleno.png',
     'img/lvl1.png',
     'img/boss.png',
-    'img/cacacoin.png'
+    'img/cacacoin.png',
+    'img/heart.png',
+    'img/bomb.png'
 
 ]);
 resources.onReady(initMusicAndLevels);
@@ -114,6 +116,7 @@ function initMusicAndLevels() {
 
     //InitLevels
     levels[0] =  new LevelNormal('level1s.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
+    levels[1] =  new BonusOne('bonus1.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
 }
 
 function init() {

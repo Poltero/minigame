@@ -62,7 +62,7 @@
                 if(this.y >= this.finalY) {
                     this.y -= this.speedJump * dt;
                 } else {
-                    this.jumped = false;    
+                    this.jumped = false;
                 }
             }   
         };

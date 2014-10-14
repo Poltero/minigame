@@ -15,12 +15,19 @@
         this.finale = false;
         this.coins = [];
         this.score = $("#score");
+        this.bulletsBoss = [];
+        this.boss = null;
 
         this.reset = function() {
             Scene.prototype.reset.call(this);
             this.bullets = [];
             this.flagSound = false;
             this.music = null;
+            this.finale = false;
+            this.bulletsBoss = [];
+            this.score.text("0");
+            $("#infoScore").fadeOut(1);
+            this.boss = null;
         }
 
         this.init = function() {
@@ -174,6 +181,11 @@
 
                 //Fallen special plataforms whenever finale is true
                 if(this.finale) {
+                    if(this.boss.positions == null) {
+                        this.boss.setPositionsBullets(this.bulletsBoss);
+                        this.boss.initBullets();
+                    }
+
                     if(this.boss.hidden)
                         this.boss.hidden = false;
                     for(var o = 0; o < this._plataforms.length; o++) {
@@ -185,6 +197,52 @@
                                     this.specials--;
                             }
                         }
+                    }
+
+                    //First fire boss
+                    if(!this.boss.firstFire) {
+                        this.boss.fire();
+                    }
+
+
+                    //Combat with boss
+                    for(var k = 0; k < this.bullets.length; k++) {
+                        if(!this.boss.isDead()) {
+                            if(this.bullets[k]) {
+                                if(this.boss.checkCollisionBullet(this.bullets[k])) {
+                                    //Existe una probabilidad de que el boss se teletransporte y no reciba daño
+                                    if(this.boss.teleport()) {
+                                        this.boss.initBullets();
+                                        this.boss.fire();
+                                    }
+                                    delete this.bullets[k];
+                                }
+                            }
+                        }
+                    }
+
+                    //Update boss' bullets
+                    this.boss.updateBullets(dt);
+
+                    //Collision player with bomb
+                    for(var k = 0; k < this.boss.bullets.length; k++) {
+                        if(this.boss.bullets[k]) {
+                            if(this._player.checkCollisionBomb(this.boss.bullets[k], this.viewport)) {
+                                this._player.die(dt);
+                                GameState.game = 'die';
+                                //console.log("collision!: yp: " + this._player.y + ", yb: " + this.boss.bullets[k].y);
+                                break;
+                            }
+                        }
+                    }
+
+                    //Update boss
+                    //En el caso de que se este teletransportando
+                    this.boss.teleporting(dt);
+                    //En el caso de que el boss esté muerto, ganamos
+                    if(this.boss.isDead()) {
+                        //Ganamos
+                        //to do
                     }
                 }
             }

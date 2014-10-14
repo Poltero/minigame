@@ -56,8 +56,30 @@
             var tT = e.y;
             var bT = e.y + e.height;
 
+            //console.log(lP + " | " + rP + " | " + bP + " | " + lT + " | " + rT + " | " + tT + " | " + bT);
+
             return ( bP >= tT &&
                     bP >= bT &&
+                    rP >= lT &&
+                    lP <= rT );
+        };
+
+        this.checkCollisionBomb = function(b, viewport) {
+            var realX = this.x + -(viewport.offsetx);
+
+            var lP = realX /* Ajuste */+ 18;
+            var rP = realX + this.width /* Ajuste */- 18;
+            var tP = this.y;
+            var bP = this.y + this.height;
+            var lT = b.x;
+            var rT = b.x + b.width;
+            var tT = b.y;
+            var bT = b.y + b.height;
+
+            //console.log(lP + " | " + rP + " | " + bP + " | " + lT + " | " + rT + " | " + tT + " | " + bT);
+
+            return (tP <= bT &&
+                    tP >= tT &&
                     rP >= lT &&
                     lP <= rT );
         };

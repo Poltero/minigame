@@ -20,10 +20,25 @@
         this.xTpl;
         this.yTpl;
         this.specials = 0;
-        this.boss = null;
         this._sizeBoss = 128;
         this._sizeCoin = 16;
         //this.vision = 128;
+
+        this.pre = function(dt) {
+            //Show Splash
+            this.xTpl = this.xSplash;
+            this.yTpl = this.ySplash;
+            this.lasttime += dt;
+
+            if(this.lasttime >= this.timeSplash) {
+                this.xTpl = this.xBackgroud;
+                this.yTpl = this.yBackgroud;
+                GameState.game = 'start';
+                //Run Background music
+                //this.music = this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop);
+                //this.music.start(0);
+            }
+        };
     };
 
 
@@ -91,11 +106,15 @@
                         this.specials++;
                     }
                     else if(c == 'o') {
-                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, 'img/tile.png', c));
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, null, c));
                         posx = posx + this._sizeTile;
                     }
                     else if(c == 'b') {
                         this.boss = new Boss(posx, posy, this._sizeBoss, this._sizeBoss, 0.2);
+                        posx = posx + this._sizeBoss;
+                    }
+                    else if(c == 'd') {
+                        this.bulletsBoss.push([posx, posy]);
                         posx = posx + this._sizeBoss;
                     }
                     else if(c == 'c') {
@@ -190,20 +209,7 @@
 
             }
             else if(GameState.game == 'splash') {
-                //Show Splash
-                this.xTpl = this.xSplash;
-                this.yTpl = this.ySplash;
-                this.lasttime += dt;
-
-                if(this.lasttime >= this.timeSplash) {
-                    this.xTpl = this.xBackgroud;
-                    this.yTpl = this.yBackgroud;
-                    GameState.game = 'start';
-                    //Run Background music
-                    //this.music = this.audio.make(this.sounds.bgmusic.buffer, this.sounds.bgmusic.loop);
-                    //this.music.start(0);
-                }
-
+                this.pre(dt);
             }
         },
 
