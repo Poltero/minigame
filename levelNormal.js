@@ -70,7 +70,7 @@
                     }
                 }
                 if(controls.up || this._player.jumped) {
-                    this._player.jump(dt, this.collision);
+                    this._player.jump(dt, this.collision);                        
                 } else {
                     flagSound = false;
                 }
@@ -146,17 +146,7 @@
                 }
 
                 //Collision player with coins
-                for(var i = 0; i < this.coins.length; i++) {
-                    if(this.coins[i]) {
-                        if(this._player.checkCollisionEnemy(this.coins[i], this.viewport)) {
-                            //+ Score
-                            var scoreLast = ~~this.score.text();
-                            this.score.text(scoreLast + this.coins[i].score);
-
-                            delete this.coins[i];
-                        }
-                    }
-                }
+                this.collisionCoins();
 
                 //Collision player with special plataforms
                 for(j = 0; j < this._plataforms.length; j++) {
@@ -241,8 +231,7 @@
                     this.boss.teleporting(dt);
                     //En el caso de que el boss esté muerto, ganamos
                     if(this.boss.isDead()) {
-                        //Ganamos
-                        //to do
+                        GameState.game = 'win';
                     }
                 }
             }

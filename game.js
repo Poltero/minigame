@@ -33,11 +33,12 @@ var GameState = {
         left: false,
         right: false,
         space: false,
-        up: false
+        up: false,
+        down: false
     },
 
     game: 'splash',
-    currentLevel: 1
+    currentLevel: 0
 };
 
 var m;
@@ -47,7 +48,7 @@ function main() {
     var dt = (now - lastTime) / 1000.0;
 
     update(dt);
-    if(GameState.game != 'reset') {
+    if(GameState.game != 'reset' && GameState.game != 'win') {
         render();
     }
     else {
@@ -117,11 +118,21 @@ function initMusicAndLevels() {
     //InitLevels
     levels[0] =  new LevelNormal('level1s.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
     levels[1] =  new BonusOne('bonus1.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
+    levels[2] =  new BonusTwo({
+            map: 'bonus2.txt',
+            splash: [2048,2048],
+            background: [2048,0],
+            music: 'test3.wav',
+            factory: musicFactory
+        });
 }
 
 function init() {
 
     $("#progressbar").fadeOut(1000);
+
+    if(GameState.game == 'win')
+        GameState.currentLevel++;
 
     levels[GameState.currentLevel].init();
 
@@ -143,6 +154,7 @@ function handlerInput() {
     GameState.controls.space = input.isDown('SPACE');
 
     GameState.controls.up = input.isDown('UP');
+    GameState.controls.down = input.isDown('DOWN');
 
     if(GameState.controls.space) {
 

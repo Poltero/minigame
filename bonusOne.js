@@ -15,6 +15,16 @@
         this.xBackgroud = posBg[0];
         this.yBackgroud = posBg[1];
 
+        this.reset = function() {
+            Scene.prototype.reset.call(this);
+            
+            this.scorePlayer = 0;
+            this.scoreNpc1 = 0;
+            this.scoreNpc2 = 0;
+            this.lastTimeNpc1 = 0;
+            this.lastTimeNpc2 = 0;
+        };
+
         //Functions
         this.update = function(dt, controls) {
             //Scene.prototype.update.call(this, dt, controls);
@@ -41,6 +51,13 @@
 
                 if(this.scoreNpc2 >= 25) {
                     delete this.npcs[1];
+                }
+
+                if(this.scorePlayer >= 100) {
+                    GameState.game = 'win';
+                } else if(this.scoreNpc1 >= 100) {
+                    GameState.game = 'reset';
+                    this.reset();
                 }
             }
             else if(GameState.game == 'splash') {

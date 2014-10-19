@@ -39,6 +39,41 @@
                 //this.music.start(0);
             }
         };
+
+        this.detectCollisionDown = function(dt, p) {
+            if(p != null) {
+                var aux = this._player;
+                this._player = p;
+            }
+            //Detect Collisions Down
+            this.collision = false;
+            for(i = 0; i < this._plataforms.length; i++) {
+                if(this._plataforms[i].type != 'i' && this._plataforms[i].type != 'o' && this._plataforms[i].type != 'm') {
+                    if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
+                        this.collision = true;
+                        break;
+                    }
+                }
+            }
+
+            if(p != null) {
+                this._player = aux;
+            }
+        };
+
+        this.collisionCoins = function() {
+            for(var i = 0; i < this.coins.length; i++) {
+                if(this.coins[i]) {
+                    if(this._player.checkCollisionEnemy(this.coins[i], this.viewport)) {
+                        //+ Score
+                        var scoreLast = ~~this.score.text();
+                        this.score.text(scoreLast + this.coins[i].score);
+
+                        delete this.coins[i];
+                    }
+                }
+            }
+        }
     };
 
 
@@ -121,6 +156,10 @@
                         this.coins.push(new Coin(posx, posy));
                         posx = posx + this._sizeCoin;
                     }
+                    else if(c == 'm') {
+                        this._plataforms.push(new Plataform(posx,posy,this._sizeTile,this._sizeTile,null, null, c));
+                        posx = posx + this._sizeCoin;
+                    }
                     else if(c == ' ') {
                         posx = posx + this._sizeTile;
                     }
@@ -192,20 +231,15 @@
                     this._player.runAnimations();
                 }
 
+                if(controls.down) {
+                    this._player.shooting = false;
+                }
+
                 if(!controls.left && !controls.right && !this._player.shooting) {
                     this._player.stopAnimations();
                 }
 
-                //Detect Collisions Down
-                this.collision = false;
-                for(i = 0; i < this._plataforms.length; i++) {
-                    if(this._plataforms[i].type != 'i' && this._plataforms[i].type != 'o') {
-                        if(this._player.checkCollision(this._plataforms[i], this.viewport)) {
-                            this.collision = true;
-                            break;
-                        }
-                    }
-                }
+                this.detectCollisionDown(dt);
 
             }
             else if(GameState.game == 'splash') {
@@ -229,25 +263,3 @@
 
     window.Scene = Scene;
 })();
-
-
-
-/*
-
-if(controls.left) {
-                if(this.viewport.offsetx <= this.player.entity.pos[0]) {
-                    this.player.entity.pos[0] -= this.player.speed * dt;
-                }
-                else {
-                    this.viewport.offsetx += this.player.speed * dt;
-                }
-            }
-            if(controls.right) {
-                if(this.viewport.pixelActivate > this.player.entity.pos[0]) {
-                    this.player.entity.pos[0] += this.player.speed * dt;
-                }
-                else {
-                    this.viewport.offsetx -= this.player.speed * dt;
-                }
-            }
-*/
