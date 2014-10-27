@@ -1,14 +1,14 @@
 (function () {
 
-    function LevelNormal(mapFile, bg, posSp, posBg, ctxAudio) {
-        Scene.call(this, mapFile, 64, 32, ctxAudio);
+    function LevelNormal(args) {
+        Scene.call(this, args.map, 64, 32, args.factory);
 
-        this.background = resources.get(bg);
-        this.xSplash = posSp[0];
-        this.ySplash = posSp[1];
-        this.xBackgroud = posBg[0];
-        this.yBackgroud = posBg[1];
-        this.bgmusic = 'test3.wav';
+        this.background = resources.get('img/'+tplLoader.template);
+        this.xSplash = args.splash[0];
+        this.ySplash = args.splash[1];
+        this.xBackgroud = args.background[0];
+        this.yBackgroud = args.background[1];
+        this.bgmusic = args.music;
         this.flagSound = false;
         this.bullets = [];
         this.music = null;

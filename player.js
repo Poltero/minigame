@@ -16,11 +16,11 @@
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = speed;
+        this.speed = config.player.speed;
         this.Viewx = 0;
         this.Viewy = 0;
-        this.speedDown = 350;
-        this.speedJump = 300;
+        this.speedDown = config.player.speedDown;
+        this.speedJump = config.player.speedJump;
         this.jumped = false;
         this.finalY = 0;
         this.pixelJump = 85;

@@ -19,7 +19,7 @@ canvas.height = 512;
 
 
 
-var contextAudio = new AudioContext()
+var contextAudio = new AudioContext();
 
 //Create an Viewport
 //var viewport = new Viewport(0,0);
@@ -60,7 +60,7 @@ function main() {
 }
 
 
-var musicFactory = new MusicFactory('music/', contextAudio, init, $("#progressbar"));
+var musicFactory = new MusicFactory(paths.music, contextAudio, init, $("#progressbar"));
 
 //Load resources assets
 resources.load([
@@ -69,7 +69,7 @@ resources.load([
     'img/bg.png',
     'img/jump.png',
     'img/enemy.png',
-    'img/tpl.png',
+    'img/'+tplLoader.template,
     'img/punio_left.png',
     'img/punio_right.png',
     'img/tilel.png',
@@ -111,18 +111,24 @@ function update(dt) {
 function initMusicAndLevels() {
     $("#progressbar").val(50);
     musicFactory.load([
-        'test3.wav',
-        'test.wav'
+        musicLoader.music.level_one_bg.file,
+        musicLoader.sounds.jump.file
     ]);
 
     //InitLevels
-    levels[0] =  new LevelNormal('level1s.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
+    levels[0] =  new LevelNormal({
+        map: bootstrap.levels.one.map, 
+        splash: bootstrap.levels.one.splash,
+        background: bootstrap.levels.one.background,
+        music: bootstrap.levels.one.music,
+        factory: musicFactory
+    });
     levels[1] =  new BonusOne('bonus1.txt', 'img/tpl.png', [2048,2048], [2048,0], musicFactory);
     levels[2] =  new BonusTwo({
-            map: 'bonus2.txt',
-            splash: [2048,2048],
-            background: [2048,0],
-            music: 'test3.wav',
+            map: bootstrap.levels.bonus_two.map,
+            splash: bootstrap.levels.bonus_two.splash,
+            background: bootstrap.levels.bonus_two.background,
+            music: bootstrap.levels.bonus_two.music,
             factory: musicFactory
         });
 }

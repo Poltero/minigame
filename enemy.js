@@ -8,7 +8,7 @@
         this.y = y;
         this.width = width;
         this.height = height;
-        this.speed = speed;
+        this.speed = config.enemy.speed;
         this.rendering = false;
         this.moving = false;
         this.speedDown = 350;

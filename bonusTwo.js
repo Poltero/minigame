@@ -3,7 +3,7 @@
     function BonusTwo(args) {
         Scene.call(this, args.map, 64, 32, args.factory);
 
-        this.background = resources.get('img/tpl.png');
+        this.background = resources.get('img/'+tplLoader.template);
         this.xSplash = args.splash[0];
         this.ySplash = args.splash[1];
         this.xBackgroud = args.background[0];

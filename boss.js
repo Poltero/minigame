@@ -5,7 +5,7 @@
         this.y = y;
         this.width = width;
         this.height = height;
-        this.prob = prob;
+        this.prob = config.boss.prob_teleport;
         this._sprite = new Sprite('img/boss.png', [x,y], [128,128], 0, [0,0], false, false, [0,0]);
         this._spriteJump;
         this._speedJump;
